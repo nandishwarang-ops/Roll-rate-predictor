@@ -1,0 +1,1572 @@
+{
+ "generated": "2026-11-20",
+ "schema": "main",
+ "tables": {
+  "bucket_flow_history": {
+   "rows": 16050,
+   "columns": {
+    "lender_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "LENDER_A",
+     "max": "LENDER_C",
+     "values": {
+      "LENDER_A": 5431,
+      "LENDER_B": 5318,
+      "LENDER_C": 5301
+     }
+    },
+    "month_date": {
+     "type": "DATE",
+     "null_pct": 0.0,
+     "distinct": 25,
+     "min": "2023-10-01",
+     "max": "2025-09-01",
+     "values": {
+      "2025-06-01": 675,
+      "2025-03-01": 674,
+      "2025-05-01": 673,
+      "2024-04-01": 673,
+      "2024-12-01": 672,
+      "2025-07-01": 672,
+      "2023-12-01": 671,
+      "2025-09-01": 671,
+      "2024-03-01": 670,
+      "2025-01-01": 670,
+      "2024-05-01": 669,
+      "2025-04-01": 669,
+      "2024-09-01": 669,
+      "2024-10-01": 668,
+      "2025-02-01": 668,
+      "2024-02-01": 667,
+      "2023-10-01": 667,
+      "2024-11-01": 666,
+      "2024-06-01": 666,
+      "2025-08-01": 666,
+      "2024-01-01": 665,
+      "2024-08-01": 664,
+      "2024-07-01": 664,
+      "2023-11-01": 661
+     }
+    },
+    "product_type": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "BUSINESS_LOAN",
+     "max": "TWO_WHEELER",
+     "values": {
+      "PERSONAL_LOAN": 5401,
+      "TWO_WHEELER": 5389,
+      "BUSINESS_LOAN": 5260
+     }
+    },
+    "region": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 4,
+     "min": "EAST",
+     "max": "WEST",
+     "values": {
+      "NORTH": 4040,
+      "SOUTH": 4030,
+      "WEST": 4026,
+      "EAST": 3954
+     }
+    },
+    "bucket_from": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 5,
+     "min": "1-30",
+     "max": "CURRENT",
+     "values": {
+      "90+": 4001,
+      "31-60": 3456,
+      "61-90": 3409,
+      "CURRENT": 2592,
+      "1-30": 2592
+     }
+    },
+    "bucket_to": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 7,
+     "min": "1-30",
+     "max": "WRITTEN_OFF",
+     "values": {
+      "CURRENT": 4247,
+      "1-30": 2592,
+      "31-60": 2579,
+      "61-90": 2340,
+      "90+": 1728,
+      "CLOSED": 1700,
+      "WRITTEN_OFF": 864
+     }
+    },
+    "account_count": {
+     "type": "INTEGER",
+     "null_pct": 0.0,
+     "distinct": 1623,
+     "min": "1",
+     "max": "14350"
+    },
+    "pos_opening_amount": {
+     "type": "BIGINT",
+     "null_pct": 0.0,
+     "distinct": 21281,
+     "min": "0",
+     "max": "3121793786"
+    }
+   },
+   "months": [
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09"
+   ]
+  },
+  "d1_account_monthly": {
+   "rows": 6039086,
+   "columns": {
+    "month_date": {
+     "type": "DATE",
+     "null_pct": 0.0,
+     "distinct": 25,
+     "min": "2023-10-01",
+     "max": "2025-09-01",
+     "values": {
+      "2025-09-01": 274296,
+      "2025-08-01": 272409,
+      "2025-07-01": 270948,
+      "2025-06-01": 269287,
+      "2025-05-01": 267673,
+      "2025-04-01": 266318,
+      "2025-03-01": 264636,
+      "2025-02-01": 263081,
+      "2025-01-01": 259925,
+      "2024-12-01": 256463,
+      "2024-11-01": 253129,
+      "2024-10-01": 249930,
+      "2024-09-01": 247971,
+      "2024-08-01": 246210,
+      "2024-07-01": 244260,
+      "2024-06-01": 242697,
+      "2024-05-01": 240851,
+      "2024-04-01": 239376,
+      "2024-03-01": 237938,
+      "2024-02-01": 236661,
+      "2024-01-01": 235376,
+      "2023-12-01": 234135,
+      "2023-11-01": 233242,
+      "2023-10-01": 232274
+     }
+    },
+    "account_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 569202,
+     "min": "KAFBL1912060456",
+     "max": "SFSTW2509257250"
+    },
+    "lender_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "LENDER_A",
+     "max": "LENDER_C",
+     "values": {
+      "LENDER_A": 2444549,
+      "LENDER_B": 1908582,
+      "LENDER_C": 1685955
+     }
+    },
+    "product_type": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "BUSINESS_LOAN",
+     "max": "TWO_WHEELER",
+     "values": {
+      "PERSONAL_LOAN": 2534377,
+      "TWO_WHEELER": 2125203,
+      "BUSINESS_LOAN": 1379506
+     }
+    },
+    "region": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 4,
+     "min": "EAST",
+     "max": "WEST",
+     "values": {
+      "SOUTH": 1910698,
+      "WEST": 1653940,
+      "NORTH": 1564237,
+      "EAST": 910211
+     }
+    },
+    "state": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 17,
+     "min": "Andhra Pradesh",
+     "max": "West Bengal",
+     "values": {
+      "Maharashtra": 827260,
+      "Gujarat": 645918,
+      "Tamil Nadu": 627819,
+      "Karnataka": 610225,
+      "Delhi": 438319,
+      "Uttar Pradesh": 408550,
+      "West Bengal": 345724,
+      "Rajasthan": 313039,
+      "Telangana": 308092,
+      "Kerala": 251053,
+      "Haryana": 216462,
+      "Punjab": 187867,
+      "Bihar": 182411,
+      "Madhya Pradesh": 180762,
+      "Odisha": 145473,
+      "Assam": 126971,
+      "Andhra Pradesh": 113509,
+      "Jharkhand": 109632
+     }
+    },
+    "city": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 31,
+     "min": "Ahmedabad",
+     "max": "Vijayawada"
+    },
+    "pin_code": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 558,
+     "min": "110009",
+     "max": "834091"
+    },
+    "disbursement_date": {
+     "type": "DATE",
+     "null_pct": 0.0,
+     "distinct": 2051,
+     "min": "2018-11-04",
+     "max": "2025-09-28"
+    },
+    "loan_amount": {
+     "type": "INTEGER",
+     "null_pct": 0.0,
+     "distinct": 2726,
+     "min": "30000",
+     "max": "3000000"
+    },
+    "tenure_months": {
+     "type": "SMALLINT",
+     "null_pct": 0.0,
+     "distinct": 6,
+     "min": "12",
+     "max": "48",
+     "values": {
+      "36": 2237152,
+      "24": 2191638,
+      "12": 480099,
+      "48": 473568,
+      "30": 360172,
+      "18": 296457
+     }
+    },
+    "interest_rate": {
+     "type": "DECIMAL(5,2)",
+     "null_pct": 0.0,
+     "distinct": 1718,
+     "min": "10.00",
+     "max": "26.00"
+    },
+    "emi_amount": {
+     "type": "INTEGER",
+     "null_pct": 0.0,
+     "distinct": 52927,
+     "min": "813",
+     "max": "286576"
+    },
+    "emi_due_day": {
+     "type": "TINYINT",
+     "null_pct": 0.0,
+     "distinct": 6,
+     "min": "2",
+     "max": "15",
+     "values": {
+      "5": 1814213,
+      "7": 1086011,
+      "2": 1080839,
+      "10": 960564,
+      "15": 611492,
+      "3": 485967
+     }
+    },
+    "mob": {
+     "type": "SMALLINT",
+     "null_pct": 0.0,
+     "distinct": 71,
+     "min": "0",
+     "max": "74"
+    },
+    "employment_type": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "GIG_WORKER",
+     "max": "SELF_EMPLOYED",
+     "values": {
+      "SALARIED": 2911348,
+      "SELF_EMPLOYED": 2500536,
+      "GIG_WORKER": 627202
+     }
+    },
+    "bureau_score": {
+     "type": "SMALLINT",
+     "null_pct": 12.5,
+     "distinct": 296,
+     "min": "600",
+     "max": "890"
+    },
+    "ntc_flag": {
+     "type": "BOOLEAN",
+     "null_pct": 0.0,
+     "distinct": 2,
+     "min": "false",
+     "max": "true",
+     "values": {
+      "False": 5284357,
+      "True": 754729
+     }
+    },
+    "pos_opening": {
+     "type": "BIGINT",
+     "null_pct": 4.64,
+     "distinct": 802529,
+     "min": "0",
+     "max": "3000000"
+    },
+    "pos_closing": {
+     "type": "BIGINT",
+     "null_pct": 0.0,
+     "distinct": 802529,
+     "min": "0",
+     "max": "3000000"
+    },
+    "overdue_amount": {
+     "type": "INTEGER",
+     "null_pct": 0.0,
+     "distinct": 109060,
+     "min": "0",
+     "max": "4498714"
+    },
+    "dpd_prev": {
+     "type": "SMALLINT",
+     "null_pct": 4.64,
+     "distinct": 484,
+     "min": "0",
+     "max": "1016"
+    },
+    "dpd_curr": {
+     "type": "SMALLINT",
+     "null_pct": 0.0,
+     "distinct": 502,
+     "min": "0",
+     "max": "1016"
+    },
+    "bucket_prev": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 6,
+     "min": "1-30",
+     "max": "NEW",
+     "values": {
+      "CURRENT": 5088484,
+      "NEW": 279948,
+      "90+": 262375,
+      "1-30": 236426,
+      "31-60": 105307,
+      "61-90": 66546
+     }
+    },
+    "bucket_curr": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 7,
+     "min": "1-30",
+     "max": "WRITTEN_OFF",
+     "values": {
+      "CURRENT": 5126010,
+      "90+": 265401,
+      "1-30": 237493,
+      "CLOSED": 208480,
+      "31-60": 105994,
+      "61-90": 66925,
+      "WRITTEN_OFF": 28783
+     }
+    },
+    "nach_status": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "BOUNCED",
+     "max": "SUCCESS",
+     "values": {
+      "SUCCESS": 4729457,
+      "BOUNCED": 1029681,
+      "NOT_DUE": 279948
+     }
+    },
+    "bounce_reason": {
+     "type": "VARCHAR",
+     "null_pct": 82.95,
+     "distinct": 6,
+     "min": "ACCOUNT_CLOSED",
+     "max": "TECH_ERROR_BANK_NPCI",
+     "values": {
+      "None": 5009405,
+      "INSUFFICIENT_FUNDS": 792977,
+      "MANDATE_CANCELLED_BY_CUSTOMER": 63511,
+      "AMOUNT_EXCEEDS_MANDATE_LIMIT": 43411,
+      "TECH_ERROR_BANK_NPCI": 40527,
+      "PAYMENT_STOPPED_BY_DRAWER": 35090,
+      "ACCOUNT_FROZEN_BLOCKED": 29350,
+      "ACCOUNT_CLOSED": 24815
+     }
+    },
+    "agency_id": {
+     "type": "VARCHAR",
+     "null_pct": 81.72,
+     "distinct": 21,
+     "min": "AG_E_FLD_01",
+     "max": "CN_W_DIGI",
+     "values": {
+      "None": 4935401,
+      "CN_S_DIGI": 198379,
+      "CN_W_DIGI": 183782,
+      "CN_N_DIGI": 174280,
+      "CN_E_DIGI": 113016,
+      "AG_W_FLD_01": 46896,
+      "AG_W_FLD_02": 46843,
+      "AG_S_FLD_02": 43271,
+      "AG_N_FLD_02": 42609,
+      "AG_N_FLD_01": 42492,
+      "AG_S_FLD_01": 42360,
+      "AG_E_FLD_01": 32992,
+      "AG_E_FLD_02": 31458,
+      "AG_W_TELE_01": 18702,
+      "AG_S_TELE_01": 14810,
+      "AG_N_TELE_01": 14109,
+      "AG_S_TELE_02": 14075,
+      "AG_N_TELE_02": 13298,
+      "AG_W_TELE_02": 10956,
+      "AG_E_TELE_01": 10114,
+      "AG_E_TELE_02": 9243
+     }
+    },
+    "allocation_channel": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 5,
+     "min": "DIGITAL_TELE",
+     "max": "TELE",
+     "values": {
+      "NONE": 4935401,
+      "DIGITAL_TELE": 669457,
+      "FIELD_LEGAL": 262375,
+      "TELE": 105307,
+      "FIELD": 66546
+     }
+    },
+    "account_status": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "ACTIVE",
+     "max": "WRITTEN_OFF",
+     "values": {
+      "ACTIVE": 5801823,
+      "CLOSED": 208480,
+      "WRITTEN_OFF": 28783
+     }
+    },
+    "closure_reason": {
+     "type": "VARCHAR",
+     "null_pct": 96.07,
+     "distinct": 4,
+     "min": "FORECLOSED",
+     "max": "WRITTEN_OFF",
+     "values": {
+      "None": 5801823,
+      "MATURED": 149148,
+      "FORECLOSED": 53533,
+      "WRITTEN_OFF": 28783,
+      "SETTLED": 5799
+     }
+    }
+   },
+   "months": [
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09"
+   ]
+  },
+  "d3_collection_events": {
+   "rows": 10293016,
+   "columns": {
+    "event_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 8629983,
+     "min": "EV23100000000",
+     "max": "EV25090454068"
+    },
+    "account_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 274806,
+     "min": "KAFBL1912060456",
+     "max": "SFSTW2508252932"
+    },
+    "lender_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "LENDER_A",
+     "max": "LENDER_C",
+     "values": {
+      "LENDER_A": 4160323,
+      "LENDER_B": 3296567,
+      "LENDER_C": 2836126
+     }
+    },
+    "month_date": {
+     "type": "DATE",
+     "null_pct": 0.0,
+     "distinct": 25,
+     "min": "2023-10-01",
+     "max": "2025-09-01",
+     "values": {
+      "2024-12-01": 473606,
+      "2025-08-01": 455268,
+      "2025-03-01": 455023,
+      "2025-09-01": 454069,
+      "2025-01-01": 451150,
+      "2025-02-01": 450089,
+      "2025-07-01": 448874,
+      "2025-06-01": 446937,
+      "2023-12-01": 443693,
+      "2025-05-01": 443381,
+      "2025-04-01": 438034,
+      "2024-11-01": 434891,
+      "2024-10-01": 426649,
+      "2024-09-01": 421559,
+      "2024-02-01": 418845,
+      "2024-03-01": 418536,
+      "2024-01-01": 418389,
+      "2024-08-01": 417741,
+      "2024-07-01": 417348,
+      "2023-11-01": 407002,
+      "2023-10-01": 400722,
+      "2024-06-01": 392731,
+      "2024-05-01": 383565,
+      "2024-04-01": 374914
+     }
+    },
+    "event_timestamp": {
+     "type": "TIMESTAMP",
+     "null_pct": 0.0,
+     "distinct": 8469991,
+     "min": "2023-10-01 07:00:03",
+     "max": "2025-09-30 19:59:58"
+    },
+    "channel": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 7,
+     "min": "FIELD_COLLECTION",
+     "max": "WHATSAPP",
+     "values": {
+      "VOICE_CALL": 4972312,
+      "SMS": 2207453,
+      "WHATSAPP": 1980947,
+      "PAYMENT": 525689,
+      "FIELD_VISIT": 500155,
+      "LEGAL_NOTICE": 91713,
+      "FIELD_COLLECTION": 14747
+     }
+    },
+    "agency_id": {
+     "type": "VARCHAR",
+     "null_pct": 5.11,
+     "distinct": 26,
+     "min": "AG_E_FLD_01",
+     "max": "LGL_W_01",
+     "values": {
+      "CN_S_DIGI": 1926915,
+      "CN_W_DIGI": 1859724,
+      "CN_N_DIGI": 1742961,
+      "CN_E_DIGI": 1172956,
+      "None": 525689,
+      "AG_W_FLD_02": 306459,
+      "AG_W_FLD_01": 305907,
+      "AG_S_FLD_02": 283711,
+      "AG_N_FLD_02": 278590,
+      "AG_N_FLD_01": 277834,
+      "AG_S_FLD_01": 277444,
+      "AG_E_FLD_01": 213968,
+      "AG_E_FLD_02": 204169,
+      "AG_W_TELE_01": 149501,
+      "AG_S_TELE_01": 118508,
+      "AG_N_TELE_01": 112828,
+      "AG_S_TELE_02": 112340,
+      "AG_N_TELE_02": 105945,
+      "AG_E_TELE_01": 80952,
+      "AG_E_TELE_02": 73827,
+      "AG_W_TELE_02": 71075,
+      "LGL_W_01": 26000,
+      "LGL_N_01": 23854,
+      "LGL_S_01": 23724,
+      "LGL_E_01": 18135
+     }
+    },
+    "agent_id": {
+     "type": "VARCHAR",
+     "null_pct": 46.83,
+     "distinct": 1202,
+     "min": "AG_E_FLD_01-A001",
+     "max": "CN_W_DIGI-A060"
+    },
+    "attempt_status": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 16,
+     "min": "ATTEMPTED",
+     "max": "VISITED_MET",
+     "values": {
+      "DELIVERED": 2808952,
+      "NO_ANSWER": 1910258,
+      "READ": 1142265,
+      "CONNECTED": 1058864,
+      "SWITCHED_OFF": 763966,
+      "COMPLETED": 499677,
+      "INVALID_NUMBER": 441071,
+      "NOT_REACHABLE": 416233,
+      "BUSY": 381920,
+      "FAILED_DELIVERY": 237183,
+      "VISITED_MET": 197530,
+      "DOOR_LOCKED": 136192,
+      "CUSTOMER_NOT_AVAILABLE": 115027,
+      "NOTICE_DISPATCHED": 91713,
+      "CUSTOMER_SHIFTED": 51406,
+      "ATTEMPTED": 40759
+     }
+    },
+    "disposition_code": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 29,
+     "min": "ALREADY_PAID_CLAIM",
+     "max": "WRONG_NUMBER",
+     "values": {
+      "REMINDER_SENT": 2207453,
+      "PAYMENT_LINK_SENT": 1980947,
+      "RNR": 1910258,
+      "SW_OFF": 763966,
+      "PAYMENT_RECEIVED": 493878,
+      "WRONG_NUMBER": 441071,
+      "NOT_REACHABLE": 416233,
+      "BUSY": 381920,
+      "PTP": 283357,
+      "REVISIT_PLANNED": 251219,
+      "CALLBACK_REQUESTED": 213593,
+      "THIRD_PARTY_CONTACT": 190433,
+      "FOLLOW_UP_REMINDER": 170209,
+      "FINANCIAL_DIFFICULTY": 162373,
+      "REFUSED_TO_PAY": 117326,
+      "SKIP_TRACE_REQUIRED": 51406,
+      "ALREADY_PAID_CLAIM": 42987,
+      "PAYMENT_FAILED": 40759,
+      "PARTIAL_COMMITMENT": 38766,
+      "PRE_LITIGATION_NOTICE": 30679,
+      "SEC_138_NOTICE": 30560,
+      "ARBITRATION_NOTICE": 30474,
+      "DISPUTE_RAISED": 21024,
+      "VEHICLE_INSPECTED": 15338,
+      "SETTLEMENT_PAYMENT": 5799,
+      "BUSINESS_LOSS": 988
+     }
+    },
+    "call_duration_sec": {
+     "type": "SMALLINT",
+     "null_pct": 51.69,
+     "distinct": 1323,
+     "min": "0",
+     "max": "1462"
+    },
+    "ptp_amount": {
+     "type": "INTEGER",
+     "null_pct": 97.66,
+     "distinct": 53520,
+     "min": "825",
+     "max": "3430392"
+    },
+    "ptp_date": {
+     "type": "DATE",
+     "null_pct": 97.66,
+     "distinct": 685,
+     "min": "2023-10-02",
+     "max": "2025-10-08"
+    },
+    "payment_mode": {
+     "type": "VARCHAR",
+     "null_pct": 94.75,
+     "distinct": 6,
+     "min": "BRANCH_DEPOSIT",
+     "max": "UPI_PAYMENT_LINK",
+     "values": {
+      "None": 9752580,
+      "UPI_PAYMENT_LINK": 259823,
+      "NEFT_IMPS": 82345,
+      "BRANCH_DEPOSIT": 81628,
+      "NACH_REPRESENTATION": 74004,
+      "UPI_AUTOPAY": 27889,
+      "CASH_FIELD": 14747
+     }
+    },
+    "payment_status": {
+     "type": "VARCHAR",
+     "null_pct": 94.75,
+     "distinct": 2,
+     "min": "FAILED",
+     "max": "SUCCESS",
+     "values": {
+      "None": 9752580,
+      "SUCCESS": 499677,
+      "FAILED": 40759
+     }
+    },
+    "payment_amount": {
+     "type": "INTEGER",
+     "null_pct": 94.75,
+     "distinct": 50796,
+     "min": "0",
+     "max": "1555918"
+    },
+    "failure_reason": {
+     "type": "VARCHAR",
+     "null_pct": 99.6,
+     "distinct": 3,
+     "min": "BANK_DECLINE",
+     "max": "INSUFFICIENT_BALANCE",
+     "values": {
+      "None": 10252257,
+      "GATEWAY_TIMEOUT": 16088,
+      "BANK_DECLINE": 13153,
+      "INSUFFICIENT_BALANCE": 11518
+     }
+    }
+   },
+   "months": [
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09"
+   ]
+  },
+  "dim_agency": {
+   "rows": 24,
+   "columns": {
+    "agency_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 26,
+     "min": "AG_E_FLD_01",
+     "max": "LGL_W_01",
+     "values": {
+      "CN_S_DIGI": 1,
+      "AG_S_FLD_02": 1,
+      "AG_E_FLD_02": 1,
+      "AG_W_TELE_01": 1,
+      "LGL_W_01": 1,
+      "AG_N_FLD_01": 1,
+      "AG_W_FLD_02": 1,
+      "CN_W_DIGI": 1,
+      "AG_W_TELE_02": 1,
+      "AG_N_TELE_01": 1,
+      "AG_S_TELE_02": 1,
+      "CN_N_DIGI": 1,
+      "AG_S_FLD_01": 1,
+      "AG_E_TELE_01": 1,
+      "AG_E_FLD_01": 1,
+      "LGL_N_01": 1,
+      "LGL_E_01": 1,
+      "LGL_S_01": 1,
+      "AG_E_TELE_02": 1,
+      "CN_E_DIGI": 1,
+      "AG_N_TELE_02": 1,
+      "AG_N_FLD_02": 1,
+      "AG_S_TELE_01": 1,
+      "AG_W_FLD_01": 1
+     }
+    },
+    "agency_name": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 21,
+     "min": "Anugraha Collections",
+     "max": "Vishwas Field Collections",
+     "values": {
+      "Marathwada Field Services": 1,
+      "Purbasha Credit Management": 1,
+      "Ekta Field Associates": 1,
+      "Uttam Recovery Associates": 1,
+      "Satyam & Co Advocates": 1,
+      "Mitra Legal Chambers": 1,
+      "CN Digital Collections Desk - North": 1,
+      "Sri Lakshmi Credit Services": 1,
+      "Ganga Recovery Services": 1,
+      "Nyaya Legal Associates": 1,
+      "Sankalp Credit Solutions": 1,
+      "CN Digital Collections Desk - South": 1,
+      "Kulkarni & Shah Legal LLP": 1,
+      "Kaveri Field Force Pvt Ltd": 1,
+      "Swastik Collections": 1,
+      "CN Digital Collections Desk - West": 1,
+      "Disha Tele Recovery Pvt Ltd": 1,
+      "Pragati Recovery Services": 1,
+      "Sahyog Credit Management": 1,
+      "Anugraha Collections": 1,
+      "CN Digital Collections Desk - East": 1,
+      "Shree Ganesh Recovery Agency": 1,
+      "Vishwas Field Collections": 1,
+      "Dakshin Recovery Solutions": 1
+     }
+    },
+    "agency_type": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 4,
+     "min": "FIELD_AGENCY",
+     "max": "TELE_AGENCY",
+     "values": {
+      "TELE_AGENCY": 8,
+      "FIELD_AGENCY": 8,
+      "LEGAL_PARTNER": 4,
+      "IN_HOUSE_DIGITAL_TELE": 4
+     }
+    },
+    "region": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 4,
+     "min": "EAST",
+     "max": "WEST",
+     "values": {
+      "SOUTH": 6,
+      "EAST": 6,
+      "WEST": 6,
+      "NORTH": 6
+     }
+    },
+    "empanelled_since": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 4,
+     "min": "2019-04-01",
+     "max": "2022-04-01",
+     "values": {
+      "2019-04-01": 7,
+      "2021-10-01": 6,
+      "2022-04-01": 5,
+      "2020-07-01": 3,
+      "2021-01-01": 3
+     }
+    },
+    "contract_status": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 1,
+     "min": "ACTIVE",
+     "max": "ACTIVE",
+     "values": {
+      "ACTIVE": 24
+     }
+    }
+   }
+  },
+  "dim_bucket": {
+   "rows": 8,
+   "columns": {
+    "bucket_code": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 7,
+     "min": "1-30",
+     "max": "WRITTEN_OFF",
+     "values": {
+      "CURRENT": 1,
+      "61-90": 1,
+      "NEW": 1,
+      "90+": 1,
+      "CLOSED": 1,
+      "31-60": 1,
+      "WRITTEN_OFF": 1,
+      "1-30": 1
+     }
+    },
+    "dpd_min": {
+     "type": "DOUBLE",
+     "null_pct": 37.5,
+     "distinct": 5,
+     "min": "0.0",
+     "max": "91.0",
+     "values": {
+      "None": 3,
+      "0.0": 1,
+      "91.0": 1,
+      "31.0": 1,
+      "61.0": 1,
+      "1.0": 1
+     }
+    },
+    "dpd_max": {
+     "type": "DOUBLE",
+     "null_pct": 37.5,
+     "distinct": 5,
+     "min": "0.0",
+     "max": "9999.0",
+     "values": {
+      "None": 3,
+      "0.0": 1,
+      "30.0": 1,
+      "60.0": 1,
+      "90.0": 1,
+      "9999.0": 1
+     }
+    },
+    "severity_order": {
+     "type": "DOUBLE",
+     "null_pct": 12.5,
+     "distinct": 7,
+     "min": "-1.0",
+     "max": "5.0",
+     "values": {
+      "-1.0": 1,
+      "2.0": 1,
+      "3.0": 1,
+      "0.0": 1,
+      "5.0": 1,
+      "1.0": 1,
+      "4.0": 1,
+      "None": 1
+     }
+    },
+    "ind_as_stage": {
+     "type": "VARCHAR",
+     "null_pct": 25.0,
+     "distinct": 3,
+     "min": "Stage 1",
+     "max": "Stage 3",
+     "values": {
+      "Stage 1": 2,
+      "None": 2,
+      "Stage 2": 2,
+      "Stage 3": 2
+     }
+    },
+    "is_terminal": {
+     "type": "BOOLEAN",
+     "null_pct": 0.0,
+     "distinct": 2,
+     "min": "false",
+     "max": "true",
+     "values": {
+      "False": 6,
+      "True": 2
+     }
+    },
+    "description": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 7,
+     "min": "Disbursed this month (bucket_prev only)",
+     "max": "Written off (typically 180+ DPD)",
+     "values": {
+      "One EMI overdue (SMA-0)": 1,
+      "Disbursed this month (bucket_prev only)": 1,
+      "No overdue EMI": 1,
+      "Three EMIs overdue (SMA-2)": 1,
+      "NPA": 1,
+      "Matured, foreclosed or settled": 1,
+      "Written off (typically 180+ DPD)": 1,
+      "Two EMIs overdue (SMA-1)": 1
+     }
+    }
+   }
+  },
+  "dim_geography": {
+   "rows": 594,
+   "columns": {
+    "pin_code": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 558,
+     "min": "110009",
+     "max": "834091"
+    },
+    "city": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 31,
+     "min": "Ahmedabad",
+     "max": "Vijayawada"
+    },
+    "state": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 17,
+     "min": "Andhra Pradesh",
+     "max": "West Bengal",
+     "values": {
+      "Maharashtra": 66,
+      "Tamil Nadu": 66,
+      "Gujarat": 66,
+      "Kerala": 44,
+      "Uttar Pradesh": 44,
+      "Karnataka": 44,
+      "Delhi": 22,
+      "Punjab": 22,
+      "Bihar": 22,
+      "Jharkhand": 22,
+      "West Bengal": 22,
+      "Assam": 22,
+      "Andhra Pradesh": 22,
+      "Odisha": 22,
+      "Haryana": 22,
+      "Rajasthan": 22,
+      "Madhya Pradesh": 22,
+      "Telangana": 22
+     }
+    },
+    "region": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 4,
+     "min": "EAST",
+     "max": "WEST",
+     "values": {
+      "SOUTH": 198,
+      "WEST": 154,
+      "NORTH": 132,
+      "EAST": 110
+     }
+    },
+    "coastal_flood_zone": {
+     "type": "BOOLEAN",
+     "null_pct": 0.0,
+     "distinct": 2,
+     "min": "false",
+     "max": "true",
+     "values": {
+      "False": 528,
+      "True": 66
+     }
+    }
+   }
+  },
+  "dim_lender": {
+   "rows": 3,
+   "columns": {
+    "lender_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "LENDER_A",
+     "max": "LENDER_C",
+     "values": {
+      "LENDER_B": 1,
+      "LENDER_C": 1,
+      "LENDER_A": 1
+     }
+    },
+    "lender_name": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "Kaveri Auto & Personal Finance Ltd",
+     "max": "Sahyadri Finserv Ltd",
+     "values": {
+      "Sahyadri Finserv Ltd": 1,
+      "Kaveri Auto & Personal Finance Ltd": 1,
+      "Nimbus Digital Lending Pvt Ltd": 1
+     }
+    },
+    "lender_type": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "Digital NBFC (Fintech)",
+     "max": "Vehicle & Consumer NBFC",
+     "values": {
+      "Vehicle & Consumer NBFC": 1,
+      "Digital NBFC (Fintech)": 1,
+      "Diversified NBFC": 1
+     }
+    },
+    "hq_city": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "Bengaluru",
+     "max": "Pune",
+     "values": {
+      "Chennai": 1,
+      "Pune": 1,
+      "Bengaluru": 1
+     }
+    },
+    "account_prefix": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "KAF",
+     "max": "SFS",
+     "values": {
+      "SFS": 1,
+      "KAF": 1,
+      "NDL": 1
+     }
+    },
+    "cn_client_since": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "2021-06-01",
+     "max": "2022-08-01",
+     "values": {
+      "2021-06-01": 1,
+      "2022-08-01": 1,
+      "2022-01-01": 1
+     }
+    },
+    "products_offered": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "PERSONAL_LOAN|BUSINESS_LOAN|TWO_WHEELER",
+     "max": "TWO_WHEELER|PERSONAL_LOAN|BUSINESS_LOAN",
+     "values": {
+      "TWO_WHEELER|PERSONAL_LOAN|BUSINESS_LOAN": 1,
+      "PERSONAL_LOAN|BUSINESS_LOAN|TWO_WHEELER": 1,
+      "PERSONAL_LOAN|TWO_WHEELER|BUSINESS_LOAN": 1
+     }
+    }
+   }
+  },
+  "dim_product": {
+   "rows": 3,
+   "columns": {
+    "product_type": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "BUSINESS_LOAN",
+     "max": "TWO_WHEELER",
+     "values": {
+      "BUSINESS_LOAN": 1,
+      "PERSONAL_LOAN": 1,
+      "TWO_WHEELER": 1
+     }
+    },
+    "product_code": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "BL",
+     "max": "TW",
+     "values": {
+      "TW": 1,
+      "BL": 1,
+      "PL": 1
+     }
+    },
+    "product_name": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "Personal Loan",
+     "max": "Unsecured Business Loan (MSME)",
+     "values": {
+      "Personal Loan": 1,
+      "Unsecured Business Loan (MSME)": 1,
+      "Two-Wheeler Loan": 1
+     }
+    },
+    "secured_flag": {
+     "type": "BOOLEAN",
+     "null_pct": 0.0,
+     "distinct": 2,
+     "min": "false",
+     "max": "true",
+     "values": {
+      "False": 2,
+      "True": 1
+     }
+    },
+    "collateral": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 2,
+     "min": "Hypothecated vehicle",
+     "max": "None",
+     "values": {
+      "None": 2,
+      "Hypothecated vehicle": 1
+     }
+    },
+    "typical_ticket_inr": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "1,50,000 - 30,00,000",
+     "max": "55,000 - 2,50,000",
+     "values": {
+      "55,000 - 2,50,000": 1,
+      "30,000 - 10,00,000": 1,
+      "1,50,000 - 30,00,000": 1
+     }
+    },
+    "typical_tenure_months": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 2,
+     "min": "12-36",
+     "max": "12-48",
+     "values": {
+      "12-36": 2,
+      "12-48": 1
+     }
+    },
+    "interest_rate_range_pct": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 3,
+     "min": "10-19",
+     "max": "16-26",
+     "values": {
+      "16-26": 1,
+      "10-19": 1,
+      "13-24": 1
+     }
+    }
+   }
+  },
+  "event_calendar": {
+   "rows": 32,
+   "columns": {
+    "event_id": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 36,
+     "min": "EVT001",
+     "max": "EVT033"
+    },
+    "event_name": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 17,
+     "min": "Christmas & New Year",
+     "max": "UPI Autopay & WhatsApp payment links launched",
+     "values": {
+      "Christmas & New Year": 3,
+      "Diwali": 3,
+      "Durga Puja": 3,
+      "RBI repo rate cut": 3,
+      "Pongal / Sankranti": 2,
+      "Holi": 2,
+      "Eid-ul-Fitr": 2,
+      "Onam": 2,
+      "Ganesh Chaturthi": 2,
+      "Fiscal year-end collections drive": 2,
+      "Penal charges framework": 1,
+      "Monsoon flooding - coastal Karnataka & Kerala": 1,
+      "Personal loan credit policy tightened": 1,
+      "Personal loan credit policy revised - eligibility expanded": 1,
+      "Recovery-agent conduct norms enforced": 1,
+      "Collections CRM migration go-live": 1,
+      "Lok Sabha general elections": 1,
+      "UPI Autopay & WhatsApp payment links launched": 1
+     }
+    },
+    "event_category": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 5,
+     "min": "FESTIVAL",
+     "max": "REGULATORY_POLICY",
+     "values": {
+      "FESTIVAL": 19,
+      "MACRO_SHOCK": 5,
+      "LENDER_PROCESS": 4,
+      "FISCAL_PERIOD": 2,
+      "REGULATORY_POLICY": 2
+     }
+    },
+    "event_start_date": {
+     "type": "DATE",
+     "null_pct": 0.0,
+     "distinct": 28,
+     "min": "2023-10-20",
+     "max": "2025-12-24",
+     "values": {
+      "2024-04-01": 2,
+      "2025-03-01": 2,
+      "2023-10-20": 1,
+      "2025-06-06": 1,
+      "2024-01-14": 1,
+      "2024-03-01": 1,
+      "2024-03-16": 1,
+      "2024-03-25": 1,
+      "2024-04-11": 1,
+      "2023-12-24": 1,
+      "2024-08-05": 1,
+      "2024-09-07": 1,
+      "2024-09-14": 1,
+      "2024-10-09": 1,
+      "2024-10-29": 1,
+      "2024-11-01": 1,
+      "2024-12-24": 1,
+      "2025-01-01": 1,
+      "2025-01-13": 1,
+      "2025-02-07": 1,
+      "2023-11-10": 1,
+      "2025-03-14": 1,
+      "2025-03-31": 1,
+      "2025-04-09": 1,
+      "2025-12-24": 1,
+      "2025-08-27": 1,
+      "2025-09-04": 1,
+      "2025-09-28": 1,
+      "2025-10-18": 1,
+      "2024-07-15": 1
+     }
+    },
+    "event_end_date": {
+     "type": "DATE",
+     "null_pct": 15.62,
+     "distinct": 21,
+     "min": "2023-10-24",
+     "max": "2026-01-01",
+     "values": {
+      "None": 5,
+      "2025-03-31": 2,
+      "2024-11-03": 1,
+      "2025-06-06": 1,
+      "2024-01-17": 1,
+      "2024-03-25": 1,
+      "2024-03-31": 1,
+      "2024-04-11": 1,
+      "2024-06-04": 1,
+      "2024-01-01": 1,
+      "2024-09-15": 1,
+      "2024-09-17": 1,
+      "2024-10-13": 1,
+      "2023-11-15": 1,
+      "2025-01-01": 1,
+      "2025-01-16": 1,
+      "2025-02-07": 1,
+      "2025-02-28": 1,
+      "2025-03-14": 1,
+      "2023-10-24": 1,
+      "2025-04-09": 1,
+      "2026-01-01": 1,
+      "2025-09-05": 1,
+      "2025-09-06": 1,
+      "2025-10-02": 1,
+      "2025-10-23": 1,
+      "2024-07-31": 1
+     }
+    },
+    "lender_id": {
+     "type": "VARCHAR",
+     "null_pct": 87.5,
+     "distinct": 3,
+     "min": "LENDER_A",
+     "max": "LENDER_C",
+     "values": {
+      "None": 28,
+      "LENDER_C": 2,
+      "LENDER_A": 1,
+      "LENDER_B": 1
+     }
+    },
+    "region": {
+     "type": "VARCHAR",
+     "null_pct": 62.5,
+     "distinct": 4,
+     "min": "EAST",
+     "max": "WEST",
+     "values": {
+      "None": 20,
+      "SOUTH": 5,
+      "EAST": 3,
+      "WEST": 2,
+      "NORTH": 2
+     }
+    },
+    "state": {
+     "type": "VARCHAR",
+     "null_pct": 93.75,
+     "distinct": 1,
+     "min": "Kerala",
+     "max": "Kerala",
+     "values": {
+      "None": 30,
+      "Kerala": 2
+     }
+    },
+    "product_type": {
+     "type": "VARCHAR",
+     "null_pct": 93.75,
+     "distinct": 1,
+     "min": "PERSONAL_LOAN",
+     "max": "PERSONAL_LOAN",
+     "values": {
+      "None": 30,
+      "PERSONAL_LOAN": 2
+     }
+    },
+    "description": {
+     "type": "VARCHAR",
+     "null_pct": 0.0,
+     "distinct": 18,
+     "min": "Diwali festival week - pan-India; elevated household spending, branch & agency holidays",
+     "max": "Year-end holiday period",
+     "values": {
+      "Diwali festival week - pan-India; elevated household spending, branch & agency holidays": 3,
+      "Year-end holiday period": 3,
+      "Durga Puja - major festival in East India; field operations slow": 3,
+      "Holi - North India": 2,
+      "Financial year closing - lenders run intensive collection & settlement drives": 2,
+      "Ganeshotsav - Maharashtra & Gujarat": 2,
+      "Harvest festival - Tamil Nadu, Andhra Pradesh, Telangana, Karnataka": 2,
+      "Onam - Kerala": 2,
+      "Eid-ul-Fitr - national holiday": 2,
+      "Monetary policy: repo rate reduced by 25 bps": 2,
+      "Penal interest replaced by flat penal charges on new and renewed loans": 1,
+      "Revised fair-practices code: borrower calls only 08:00-19:00, call-frequency caps, mandatory call recording for agencies": 1,
+      "Lender B enabled UPI Autopay mandates and WhatsApp pay-links for early-bucket (bounced / 1-30 DPD) customers": 1,
+      "Monetary policy: repo rate reduced by 50 bps": 1,
+      "Heavy rainfall and flooding in Dakshina Kannada, Ernakulam and Kozhikode districts; field visits disrupted": 1,
+      "Model code of conduct in force; phased polling across states": 1,
+      "Lender A moved collections case management to a new CRM platform": 1,
+      "Lender C expanded PL eligibility to new-to-credit customers and bureau 650+, raised max ticket": 1,
+      "Lender C capped new-to-credit exposure and restored bureau cut-off": 1
+     }
+    },
+    "announced_date": {
+     "type": "DATE",
+     "null_pct": 0.0,
+     "distinct": 13,
+     "min": "2023-01-01",
+     "max": "2025-06-06",
+     "values": {
+      "2024-01-01": 8,
+      "2025-01-01": 8,
+      "2023-01-01": 3,
+      "2023-08-18": 1,
+      "2024-01-15": 1,
+      "2024-02-15": 1,
+      "2024-03-16": 1,
+      "2024-07-10": 1,
+      "2024-07-15": 1,
+      "2024-10-20": 1,
+      "2024-12-10": 1,
+      "2025-01-15": 1,
+      "2025-02-07": 1,
+      "2025-02-20": 1,
+      "2025-04-09": 1,
+      "2025-06-06": 1
+     }
+    },
+    "known_in_advance": {
+     "type": "BOOLEAN",
+     "null_pct": 0.0,
+     "distinct": 2,
+     "min": "false",
+     "max": "true",
+     "values": {
+      "True": 28,
+      "False": 4
+     }
+    }
+   }
+  }
+ }
+}
