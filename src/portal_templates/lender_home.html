@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Your packs{% endblock %}{% block body %}<h1>Your review packs</h1><p class="muted">Only packs that CN has approved and delivered to you appear here.</p>
+<table><thead><tr><th>Month</th><th>Delivered</th><th></th></tr></thead><tbody>{% for r in runs %}<tr><td>{{ r.month }}</td><td>{{ r.delivered_at }}</td><td><a class="btn" href="{{ url_for('run_view', rid=r.id) }}">Open</a></td></tr>{% else %}<tr><td colspan="3" class="muted">Nothing delivered yet.</td></tr>{% endfor %}</tbody></table>{% endblock %}

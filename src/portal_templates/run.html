@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% block title %}{{ r.id }}{% endblock %}{% block body %}
+<p class="muted"><a href="{{ url_for('home') }}">&larr; {{ 'All runs' if view == 'analyst' else 'Your packs' }}</a></p>
+<h1>{{ r.lender }} &middot; {{ r.month }} <span class="badge">{{ r.pack_state }}</span></h1>
+<p class="muted">Run {{ r.id }} &middot; {{ r.investigator }} &middot; started by {{ r.requested_by }}{% if r.reviewed_by %} &middot; reviewer {{ r.reviewed_by }}{% endif %}{% if r.approved_by %} &middot; approved by {{ r.approved_by }}{% endif %}{% if r.delivered_at %} &middot; delivered {{ r.delivered_at }}{% endif %}</p>
+{% if view == 'analyst' %}
+{% if r.status in ('queued','running') %}<div class="warnbox">This run is {{ r.status }}. The page refreshes itself.</div><script>setTimeout(function(){location.reload()},3000)</script>{% endif %}
+{% if r.status == 'paused: data checks failed' or r.status == 'failed' %}<div class="badbox"><b>No pack.</b> {{ r.status }}{% if r.error %}: {{ r.error }}{% endif %}</div>{% endif %}
+{% for p in problems %}<div class="badbox" style="margin:6px 0">{{ p }}</div>{% endfor %}
+{% if figures %}<div class="grid" style="margin:12px 0">{% for k,v in figures %}<div class="card kpi"><span class="muted">{{ k }}</span><b>{{ v }}</b></div>{% endfor %}</div>{% endif %}
+{% if r.pack_dir %}
+<div class="card"><h3 style="margin-top:0">Decision</h3>
+<form method="post" action="{{ url_for('act', rid=r.id) }}" class="row"><input type="hidden" name="csrf" value="{{ csrf }}"><input name="note" placeholder="Note (required to reject)" style="flex:1;min-width:200px">
+{% if r.pack_state == 'draft' %}<button name="action" value="start_review" class="primary">Start review</button>{% endif %}
+{% if r.pack_state == 'in_review' %}<button name="action" value="approve" class="primary">Approve</button>{% endif %}
+{% if r.pack_state == 'approved' %}<button name="action" value="deliver" class="primary">Deliver to lender</button>{% endif %}
+{% if r.pack_state in ('draft','in_review') %}<button name="action" value="reject" class="danger">Reject</button>{% endif %}
+{% if r.pack_state in ('draft','in_review','approved','rejected') %}<button name="action" value="supersede">Re-run (supersede this pack)</button>{% endif %}</form>
+{% if four_eyes and r.pack_state == 'in_review' %}<p class="muted">Four-eyes is on: approval must come from someone other than {{ r.requested_by }}.</p>{% endif %}</div>
+{% endif %}
+{% endif %}
+{% if r.pack_dir or r.delivered_dir %}<h2>Pack</h2><p class="row"><a class="btn" href="{{ url_for('serve', rid=r.id, name='pack.pdf') }}">Download PDF</a><a class="btn" href="{{ url_for('serve', rid=r.id, name='pack.md') }}">Markdown</a></p>
+<iframe src="{{ url_for('serve', rid=r.id, name='pack.pdf') }}" title="Review pack PDF"></iframe>{% endif %}
+{% if esc %}<h2>Questions for operations</h2>{% for e in esc %}<div class="card"><b>{{ e.id }}</b> <span class="badge">{{ e.priority }} priority</span> <span class="muted">{{ e.scope }} &middot; {{ e.bucket_from }} bucket</span><ol>{% for q in e.questions %}<li>{{ q|code }}</li>{% endfor %}</ol>
+<form method="post" action="{{ url_for('reply', rid=r.id) }}"><input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="escalation_id" value="{{ e.id }}"><textarea name="answer" placeholder="Operations reply (treated as a lead to test next month, not as a fact)"></textarea><p><button>Record reply</button></p></form></div>{% endfor %}{% endif %}
+{% if view == 'analyst' %}
+<h2>Investigation trail</h2>
+{% for f in rec.get('findings', []) %}<div class="card"><b>{{ f.label }}</b> <span class="badge {{ 'ok' if f.status == 'complete' else 'warn' }}">{{ f.status }}</span>{% if f.reason %}<span class="muted"> {{ f.reason }}</span>{% endif %}
+{% if f.headline %}<p>{{ f.headline|code }}</p>{% endif %}
+{% for d in f.drivers %}<div class="muted"><b>Finding:</b> {{ d.what|code }} &middot; {{ d.category }} &middot; confidence {{ d.confidence }} &middot; evidence {{ d.evidence_ids|join(', ') }}<br>Control group: {{ d.control_group_note }}</div>{% endfor %}
+{% for h in f.rejected_hypotheses %}<div class="muted"><b>Rejected:</b> {{ h.hypothesis|code }}: {{ h.why_rejected|code }} ({{ h.evidence_ids|join(', ') }})</div>{% endfor %}
+{% if f.unexplained_note %}<div class="muted"><b>Not explained:</b> {{ f.unexplained_note|code }}</div>{% endif %}</div>{% else %}<p class="muted">No investigations were needed or recorded.</p>{% endfor %}
+{% if evidence %}<h3>Evidence ledger</h3><table><thead><tr><th>Id</th><th>What</th></tr></thead><tbody>{% for k,e in evidence.items() %}<tr><td>{{ k }}</td><td>{% if e.sql %}<b>{{ e.purpose }}</b><pre>{{ e.sql }}</pre>{% else %}attribution call <pre>{{ e.args }}</pre>{% endif %}</td></tr>{% endfor %}</tbody></table>{% endif %}
+<h2>Audit</h2><div class="card">
+<p>Trace integrity: {% if trace_ok %}<span class="badge {{ 'ok' if trace_ok[0] else 'bad' }}">{{ trace_ok[2] }}</span>{% else %}<span class="badge warn">no trace</span>{% endif %}</p>
+{% if rec.get('nodes') %}<table><thead><tr><th>Step</th><th>Result</th><th>Seconds</th></tr></thead><tbody>{% for n in rec.nodes %}<tr><td>{{ n.node }}</td><td>{{ n.status }}{% if n.error %}: {{ n.error }}{% endif %}</td><td>{{ n.secs }}</td></tr>{% endfor %}</tbody></table>{% endif %}
+{% for w in rec.get('warnings', []) %}<div class="warnbox" style="margin:6px 0">{{ w }}</div>{% endfor %}</div>
+<h3>Human actions on this run</h3><table><thead><tr><th>When</th><th>Who</th><th>What</th></tr></thead><tbody>{% for a in actions %}<tr><td>{{ a.ts }}</td><td>{{ a.actor }}</td><td>{{ a.summary }}</td></tr>{% else %}<tr><td colspan="3" class="muted">none yet</td></tr>{% endfor %}</tbody></table>
+<h2 id="comments">Comments</h2>{% for c in comments %}<div class="card"><b>{{ c.username }}</b> <span class="muted">{{ c.ts }}</span><br>{{ c.body }}</div>{% endfor %}
+<form method="post" action="{{ url_for('add_comment', rid=r.id) }}"><input type="hidden" name="csrf" value="{{ csrf }}"><textarea name="body" placeholder="Add a review comment"></textarea><p><button>Comment</button></p></form>
+{% endif %}{% endblock %}

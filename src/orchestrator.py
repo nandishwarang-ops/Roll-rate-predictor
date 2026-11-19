@@ -246,7 +246,8 @@ def run_lender(cfg: RunConfig):
         except Exception: pass
     run.trace.emit("run_end", "end", "system", f"run finished: {status}", {"status": status, "error": err, "warnings": run.warnings, "total_secs": round(time.time() - run.t0, 1)}); trace_report(run.trace.path, run.trace.path.with_suffix(".report.md"))
     rec = {"trace": str(run.trace.path), "run_id": run.run_id, "lender": run.L, "origin": run.O[:7], "status": status, "error": err, "total_secs": round(time.time() - run.t0, 1), "nodes": run.nodes, "warnings": run.warnings, "incomplete_investigations": run.incomplete,
-           "investigations": [{"label": r.get("label"), "status": r["status"], "source": r.get("source", "llm" if cfg.client else None), "reason": r.get("reason")} for r in run.results], "active_drivers": run.active, "outputs": run.outputs}
+           "investigations": [{"label": r.get("label"), "status": r["status"], "source": r.get("source", "llm" if cfg.client else None), "reason": r.get("reason")} for r in run.results],
+           "findings": [{"label": r.get("label"), "status": r["status"], "headline": r.get("findings", {}).get("headline"), "drivers": [{k: d.get(k) for k in ("what", "where", "when", "category", "confidence", "evidence_ids", "control_group_note")} for d in r.get("findings", {}).get("drivers", [])], "rejected_hypotheses": r.get("findings", {}).get("rejected_hypotheses", []), "unexplained_note": r.get("findings", {}).get("unexplained_note"), "escalation_questions": r.get("findings", {}).get("escalation_questions", []), "reason": r.get("reason")} for r in run.results], "active_drivers": run.active, "outputs": run.outputs}
     d = pathlib.Path(cfg.out_root) / "runs"; d.mkdir(parents=True, exist_ok=True); (d / f"{run.run_id}.json").write_text(json.dumps(rec, indent=1, default=str)); return rec
 def prepare(origin):
     """shared, sequential, read-write preparation (all RW connections are closed before any parallel work)."""

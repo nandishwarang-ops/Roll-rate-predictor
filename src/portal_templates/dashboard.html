@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Runs{% endblock %}{% block body %}
+<h1>Monthly runs</h1><p class="muted">Start a run, review the pack, approve it (a second analyst), then deliver it to the lender's own space.</p>
+{% if not llm %}<div class="warnbox" style="margin:10px 0">No API key is set, so investigations use the rule-based investigator: it finds and sizes where a movement is concentrated but cannot name the mechanism, so it asks operations instead.</div>{% endif %}
+{% if not audit_ok[0] %}<div class="badbox">The portal's own action log failed its integrity check: {{ audit_ok[2] }}</div>{% endif %}
+<div class="card"><form method="post" action="{{ url_for('run_new') }}" class="row"><input type="hidden" name="csrf" value="{{ csrf }}"><label>Lender <select name="lender">{% for k,v in LENDERS.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}</select></label>
+<label>Data cut-off month <select name="month">{% for m in months|reverse %}<option>{{ m }}</option>{% endfor %}</select></label><button class="primary">Start run</button></form></div>
+<h2>Runs</h2><table id="runs"><thead><tr><th>Run</th><th>Lender</th><th>Month</th><th>Run status</th><th>Pack</th><th>Started by</th><th>Seconds</th></tr></thead><tbody>
+{% for r in runs %}<tr id="{{ r.id }}"><td><a href="{{ url_for('run_view', rid=r.id) }}">{{ r.id }}</a></td><td>{{ r.lender }}</td><td>{{ r.month }}</td>
+<td><span class="badge {{ 'ok' if r.status.startswith('complete') else ('bad' if r.status in ('failed',) else 'warn') }}">{{ r.status }}</span></td><td><span class="badge">{{ r.pack_state }}</span></td><td>{{ r.requested_by }}</td><td>{{ r.secs or '' }}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">No runs yet.</td></tr>{% endfor %}</tbody></table>
+<script>if ({{ 'true' if runs|selectattr('status','in',['queued','running'])|list|length else 'false' }}) { setTimeout(function(){ location.reload(); }, 4000); }</script>{% endblock %}

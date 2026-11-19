@@ -59,7 +59,7 @@ Repo: github.com/nandishwarang-ops/Roll-rate-predictor (public). Local folder: `
 | 27 | Audit trace and logging | done (committed locally; see section 9) |
 | 28 | Backtest harness with planted shifts | done; **results are weak** (see section 4b) |
 | 29 | Threshold tuning and accuracy evaluation | done; one change adopted, most ideas did not help (see section 4c) |
-| 30 | Review portal (run, review, approve, deliver) | **not started** |
+| 30 | Review portal (run, review, approve, deliver) | done (local, Flask; see section 4d) |
 | 31 | End-to-end run, timing check, demo prep | **not started** |
 
 `docs/BUILD_PROGRESS.md` has the same table with file names (it was updated through section 26).
@@ -135,6 +135,17 @@ Report: `docs/tuning_report.md`. Code: `src/ensemble_tuning.py`, `src/tuning.py`
 - Acceptance scorecard (public data): MAPE vs seasonal-naive 25.8% (30% **not met**); detection 5/14; naming 8/14; ranges 78-89% covered; shape classification correct on a high-power pool only; audit and speed requirements met.
 - Side effects of the change: slice identifiers are now written in backticks in the pack (they are labels like `mob_0-3`, not numbers, and the auditor ignores backticked text); the investigator always logs one supporting SQL query so every driver has a Q-id.
 
+### 4d. Review portal (section 30)
+
+`src/portal_app.py` (Flask, serves on 127.0.0.1:5057), `src/portal_store.py` (SQLite state, pack lifecycle state machine, hash-chained log of human actions), `src/portal_templates/`, `src/portal_cli.py` (create users; prompts for the password). Start: `.venv/bin/python src/portal_app.py`. Data lives in `outputs/portal/` (not in git).
+
+- Flow: an analyst starts a run (background worker, one run at a time because the shared preparation step opens the database read-write) -> pack is `draft` -> `in_review` (a reviewer) -> `approved` (a DIFFERENT analyst: four-eyes) -> `delivered` (copied to `delivered/<lender>/<month>/v<n>/`) or `rejected` / `superseded`. Approval requires a clean numeric audit and an intact trace chain; delivery re-verifies the manifest hashes and the trace, so a pack edited after generation cannot go out.
+- Analyst pages: runs dashboard with live status, review page with key figures, decision buttons, the embedded PDF, questions for operations, the investigation trail (findings, rejected hypotheses, what is unexplained), the evidence ledger (SQL and attribution calls), audit (trace integrity, step timings, warnings, human actions), comments.
+- Lender pages: a lender user sees only their own lender's DELIVERED packs (404 otherwise), no evidence ledger, audit or decisions; they can reply to operations questions, and the reply is stored as a lead for next month's investigation.
+- Security: hashed passwords (PBKDF2; this Mac's Python lacks scrypt), signed HttpOnly session cookie, CSRF token on every POST, role checks in routes and in the store, whitelisted path-checked file serving, escaped output, login throttling, security headers (CSP, nosniff, frame-ancestors).
+- Tested: 33 tests with the Flask test client (stub pipeline), plus a real run through the portal in the browser (Lender C, March 2025: 40.8 s, pack and review page render, the embedded PDF displays; the investigator named loan-age band `mob_0-3`, consistent with the seeded Lender C cohort event).
+- Limits: local accounts only, NOT a production identity system (no SSO, no password reset, no MFA); one run at a time; the three escalations in that run are near-duplicate questions (one per flagged sub-pool) and should be merged; real email/Slack notification is not wired; no automated browser test suite beyond the manual check.
+
 ---
 
 ## 5. Architecture and file map
@@ -170,6 +181,7 @@ src/
   audit_trace.py        S27  hash-chained trace
   planted.py, planted_backtest.py, planted_report.py   S28  planted-shift harness
   ensemble_tuning.py, tuning.py, tuning_report.py       S29  tuning and accuracy evaluation
+  portal_app.py, portal_store.py, portal_cli.py, portal_templates/   S30  review portal
 tests/   one test file per section (test_*.py) plus fixtures.py
 docs/    DATA_DICTIONARY.md, schema.png, BUILD_PROGRESS.md, backtest and calibration reports, this file
 ```
@@ -199,7 +211,7 @@ Derived tables live in the `mart` schema of `rollrate.duckdb`: `transition_cells
 
 Hooks were added to `SQLTool` and `AttributionTool` (optional `trace`, `id_offset`) and to every orchestrator step. After the change the orchestrator tests (15), SQL tool, attribution, Detective, pack author and document generator tests all still pass.
 
-**Status:** sections 1-28 are on GitHub (commit `179e4c4`). Section 29 is committed locally after that.
+**Status:** sections 1-29 are on GitHub (commit `1b6bda7`). Section 30 is committed locally after that.
 
 ---
 
