@@ -13,6 +13,7 @@
 | 9 | Model bake-off and selection | done (ensemble, 25.8% better than snaive; below 30% bar) | src/bakeoff.py |
 | 10 | Hierarchical change detection | done (thresholds to be tuned in 29) | src/detection.py |
 | 11 | Leading-indicator and forward-calendar scan | done | src/leading_scan.py |
-| 12-31 | remaining | not started | |
+| 12 | Drift profiler | done | src/drift_profiler.py |
+| 13-31 | remaining | not started | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).
