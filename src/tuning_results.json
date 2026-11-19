@@ -1,0 +1,1626 @@
+{
+ "grid": [
+  {
+   "Z": 2.0,
+   "Q": 0.05,
+   "MAT": 0.005,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.0,
+   "Q": 0.05,
+   "MAT": 0.01,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.0,
+   "Q": 0.1,
+   "MAT": 0.005,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.0,
+   "Q": 0.1,
+   "MAT": 0.01,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.5,
+   "Q": 0.05,
+   "MAT": 0.005,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.5,
+   "Q": 0.05,
+   "MAT": 0.01,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.5,
+   "Q": 0.1,
+   "MAT": 0.005,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.5,
+   "Q": 0.1,
+   "MAT": 0.01,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 3.0,
+   "Q": 0.05,
+   "MAT": 0.005,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 3.0,
+   "Q": 0.05,
+   "MAT": 0.01,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 3.0,
+   "Q": 0.1,
+   "MAT": 0.005,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 3.0,
+   "Q": 0.1,
+   "MAT": 0.01,
+   "MIN_OPEN": 60
+  },
+  {
+   "Z": 2.5,
+   "Q": 0.05,
+   "MAT": 0.01,
+   "MIN_OPEN": 30
+  }
+ ],
+ "rows": [
+  {
+   "name": "agency_05_base",
+   "base": "agency",
+   "size": "base",
+   "split": "train",
+   "T": "2025-05-01",
+   "pool_pp": 5.792163543441227,
+   "slice_pp": 10.149253731343284,
+   "detection": {
+    "0": {
+     "any": true,
+     "priority": true
+    },
+    "1": {
+     "any": true,
+     "priority": true
+    },
+    "2": {
+     "any": true,
+     "priority": true
+    },
+    "3": {
+     "any": true,
+     "priority": true
+    },
+    "4": {
+     "any": true,
+     "priority": true
+    },
+    "5": {
+     "any": true,
+     "priority": true
+    },
+    "6": {
+     "any": true,
+     "priority": true
+    },
+    "7": {
+     "any": true,
+     "priority": true
+    },
+    "8": {
+     "any": true,
+     "priority": true
+    },
+    "9": {
+     "any": true,
+     "priority": true
+    },
+    "10": {
+     "any": true,
+     "priority": true
+    },
+    "11": {
+     "any": true,
+     "priority": true
+    },
+    "12": {
+     "any": true,
+     "priority": true
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V1_direction_z": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 7,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": true,
+     "flagged": 6,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": true,
+     "flagged": 6,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    }
+   }
+  },
+  {
+   "name": "agency_06_base",
+   "base": "agency",
+   "size": "base",
+   "split": "train",
+   "T": "2025-06-01",
+   "pool_pp": 5.379746835443038,
+   "slice_pp": 9.912536443148689,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "(None, 'WEST')",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": true,
+     "flagged": 9,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 1,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    }
+   }
+  },
+  {
+   "name": "agency_07_base",
+   "base": "agency",
+   "size": "base",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 5.483870967741935,
+   "slice_pp": 10.029498525073747,
+   "detection": {
+    "0": {
+     "any": true,
+     "priority": true
+    },
+    "1": {
+     "any": true,
+     "priority": true
+    },
+    "2": {
+     "any": true,
+     "priority": true
+    },
+    "3": {
+     "any": true,
+     "priority": true
+    },
+    "4": {
+     "any": true,
+     "priority": true
+    },
+    "5": {
+     "any": true,
+     "priority": true
+    },
+    "6": {
+     "any": true,
+     "priority": true
+    },
+    "7": {
+     "any": true,
+     "priority": true
+    },
+    "8": {
+     "any": true,
+     "priority": true
+    },
+    "9": {
+     "any": true,
+     "priority": true
+    },
+    "10": {
+     "any": true,
+     "priority": true
+    },
+    "11": {
+     "any": true,
+     "priority": true
+    },
+    "12": {
+     "any": true,
+     "priority": true
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 1,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V2_parent_pools": {
+     "top1": false,
+     "top3": true,
+     "flagged": 8,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": true,
+     "flagged": 9,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 1,
+     "top1_or_leads3": false,
+     "pool": "(None, 'WEST')",
+     "used_detected_node": true
+    }
+   }
+  },
+  {
+   "name": "agency_07_half",
+   "base": "agency",
+   "size": "half",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 2.7419354838709675,
+   "slice_pp": 5.014749262536873,
+   "detection": {
+    "0": {
+     "any": true,
+     "priority": true
+    },
+    "1": {
+     "any": true,
+     "priority": true
+    },
+    "2": {
+     "any": true,
+     "priority": true
+    },
+    "3": {
+     "any": true,
+     "priority": true
+    },
+    "4": {
+     "any": true,
+     "priority": true
+    },
+    "5": {
+     "any": true,
+     "priority": true
+    },
+    "6": {
+     "any": true,
+     "priority": true
+    },
+    "7": {
+     "any": true,
+     "priority": true
+    },
+    "8": {
+     "any": true,
+     "priority": true
+    },
+    "9": {
+     "any": true,
+     "priority": true
+    },
+    "10": {
+     "any": true,
+     "priority": true
+    },
+    "11": {
+     "any": true,
+     "priority": true
+    },
+    "12": {
+     "any": true,
+     "priority": true
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 1,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 3,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": true
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": false,
+     "flagged": 3,
+     "top1_or_leads3": false,
+     "pool": "(None, 'WEST')",
+     "used_detected_node": true
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "('BUSINESS_LOAN', 'WEST')",
+     "used_detected_node": true
+    }
+   }
+  },
+  {
+   "name": "policy_05_base",
+   "base": "policy",
+   "size": "base",
+   "split": "train",
+   "T": "2025-05-01",
+   "pool_pp": 6.562847608453837,
+   "slice_pp": 8.005427408412483,
+   "detection": {
+    "0": {
+     "any": true,
+     "priority": true
+    },
+    "1": {
+     "any": true,
+     "priority": true
+    },
+    "2": {
+     "any": true,
+     "priority": true
+    },
+    "3": {
+     "any": true,
+     "priority": true
+    },
+    "4": {
+     "any": true,
+     "priority": true
+    },
+    "5": {
+     "any": true,
+     "priority": true
+    },
+    "6": {
+     "any": true,
+     "priority": true
+    },
+    "7": {
+     "any": true,
+     "priority": true
+    },
+    "8": {
+     "any": true,
+     "priority": true
+    },
+    "9": {
+     "any": true,
+     "priority": true
+    },
+    "10": {
+     "any": true,
+     "priority": true
+    },
+    "11": {
+     "any": true,
+     "priority": true
+    },
+    "12": {
+     "any": true,
+     "priority": true
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V1_direction_z": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V2_parent_pools": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "('TWO_WHEELER', None)",
+     "used_detected_node": true
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": false,
+     "flagged": 4,
+     "top1_or_leads3": false,
+     "pool": "('TWO_WHEELER', None)",
+     "used_detected_node": true
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 3,
+     "top1_or_leads3": false,
+     "pool": "('TWO_WHEELER', None)",
+     "used_detected_node": true
+    }
+   }
+  },
+  {
+   "name": "policy_06_base",
+   "base": "policy",
+   "size": "base",
+   "split": "train",
+   "T": "2025-06-01",
+   "pool_pp": 6.632124352331606,
+   "slice_pp": 7.980049875311721,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": false,
+     "flagged": 3,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    }
+   }
+  },
+  {
+   "name": "policy_07_base",
+   "base": "policy",
+   "size": "base",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 6.487025948103793,
+   "slice_pp": 8.004926108374384,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": false,
+     "flagged": 6,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 4,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    }
+   }
+  },
+  {
+   "name": "policy_07_half",
+   "base": "policy",
+   "size": "half",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 3.193612774451098,
+   "slice_pp": 3.9408866995073892,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": false,
+     "top3": false,
+     "flagged": 0,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": false,
+     "flagged": 3,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 3,
+     "top1_or_leads3": false,
+     "pool": "(None, None)",
+     "used_detected_node": false
+    }
+   }
+  },
+  {
+   "name": "cohort_06_base",
+   "base": "cohort",
+   "size": "base",
+   "split": "train",
+   "T": "2025-06-01",
+   "pool_pp": 0.9431331288188018,
+   "slice_pp": 15.00605082694635,
+   "detection": {
+    "0": {
+     "any": true,
+     "priority": true
+    },
+    "1": {
+     "any": true,
+     "priority": true
+    },
+    "2": {
+     "any": true,
+     "priority": true
+    },
+    "3": {
+     "any": true,
+     "priority": true
+    },
+    "4": {
+     "any": true,
+     "priority": true
+    },
+    "5": {
+     "any": true,
+     "priority": true
+    },
+    "6": {
+     "any": true,
+     "priority": true
+    },
+    "7": {
+     "any": true,
+     "priority": true
+    },
+    "8": {
+     "any": true,
+     "priority": true
+    },
+    "9": {
+     "any": true,
+     "priority": true
+    },
+    "10": {
+     "any": true,
+     "priority": true
+    },
+    "11": {
+     "any": true,
+     "priority": true
+    },
+    "12": {
+     "any": true,
+     "priority": true
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": false,
+     "flagged": 18,
+     "top1_or_leads3": false,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 7,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": true
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 6,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": true,
+     "top3": true,
+     "flagged": 5,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "(None, None)",
+     "used_detected_node": true
+    },
+    "size_err_pp": -10.254019212494857
+   }
+  },
+  {
+   "name": "cohort_07_base",
+   "base": "cohort",
+   "size": "base",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 0.7162018525079719,
+   "slice_pp": 14.98147167813658,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": true,
+     "flagged": 8,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 4,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 4,
+     "top1_or_leads3": true,
+     "pool": "('PERSONAL_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": true,
+     "flagged": 3,
+     "top1_or_leads3": true,
+     "pool": "('PERSONAL_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 1,
+     "top1_or_leads3": false,
+     "pool": "('PERSONAL_LOAN', None)",
+     "used_detected_node": false
+    }
+   }
+  },
+  {
+   "name": "cohort_07_half",
+   "base": "cohort",
+   "size": "half",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 0.3593663005517032,
+   "slice_pp": 7.517204870301747,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": true,
+     "flagged": 4,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "('PERSONAL_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": false,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "('PERSONAL_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": false,
+     "top3": false,
+     "flagged": 1,
+     "top1_or_leads3": false,
+     "pool": "('PERSONAL_LOAN', None)",
+     "used_detected_node": false
+    }
+   }
+  },
+  {
+   "name": "city_06_base",
+   "base": "city",
+   "size": "base",
+   "split": "train",
+   "T": "2025-06-01",
+   "pool_pp": 0.9856532690833425,
+   "slice_pp": 6.00400266844563,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": true,
+     "top3": true,
+     "flagged": 5,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 3,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": true,
+     "top3": true,
+     "flagged": 4,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "size_err_pp": -2.101443939739015
+   }
+  },
+  {
+   "name": "city_07_base",
+   "base": "city",
+   "size": "base",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 0.9755562863093281,
+   "slice_pp": 5.985205110961668,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": true,
+     "flagged": 6,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": true,
+     "top3": true,
+     "flagged": 4,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": true,
+     "top3": true,
+     "flagged": 6,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "size_err_pp": -0.39884684932636727
+   }
+  },
+  {
+   "name": "city_07_half",
+   "base": "city",
+   "size": "half",
+   "split": "test",
+   "T": "2025-07-01",
+   "pool_pp": 0.49325879644853665,
+   "slice_pp": 3.0262273032952254,
+   "detection": {
+    "0": {
+     "any": false,
+     "priority": false
+    },
+    "1": {
+     "any": false,
+     "priority": false
+    },
+    "2": {
+     "any": false,
+     "priority": false
+    },
+    "3": {
+     "any": false,
+     "priority": false
+    },
+    "4": {
+     "any": false,
+     "priority": false
+    },
+    "5": {
+     "any": false,
+     "priority": false
+    },
+    "6": {
+     "any": false,
+     "priority": false
+    },
+    "7": {
+     "any": false,
+     "priority": false
+    },
+    "8": {
+     "any": false,
+     "priority": false
+    },
+    "9": {
+     "any": false,
+     "priority": false
+    },
+    "10": {
+     "any": false,
+     "priority": false
+    },
+    "11": {
+     "any": false,
+     "priority": false
+    },
+    "12": {
+     "any": false,
+     "priority": false
+    }
+   },
+   "naming": {
+    "V0_current": {
+     "top1": false,
+     "top3": true,
+     "flagged": 5,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V1_direction_z": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "",
+     "used_detected_node": false
+    },
+    "V2_parent_pools": {
+     "top1": true,
+     "top3": true,
+     "flagged": 2,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V3_3month_window_at_T+2": {
+     "top1": true,
+     "top3": true,
+     "flagged": 3,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "V2_at_T+2_1month": {
+     "top1": true,
+     "top3": true,
+     "flagged": 5,
+     "top1_or_leads3": true,
+     "pool": "('BUSINESS_LOAN', None)",
+     "used_detected_node": false
+    },
+    "size_err_pp": -0.35494656254057366
+   }
+  }
+ ],
+ "false_flags": [
+  {
+   "cfg": 0,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 1,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 2,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 3,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 4,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 5,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 6,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 7,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 8,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 9,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 10,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 11,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  },
+  {
+   "cfg": 12,
+   "flags_per_lender_month": 1.1666666666666667,
+   "priority_like_per_lender_month": 0.4166666666666667
+  }
+ ],
+ "secs": 783
+}

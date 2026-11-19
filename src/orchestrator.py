@@ -42,7 +42,7 @@ DIM_LABEL = {"agency_id": "agency", "allocation_channel": "allocation channel", 
 NATIVE = {"agency_id", "city", "state", "employment_type", "nach_status", "bounce_reason", "allocation_channel", "emi_due_day", "ntc_flag"}
 def rule_detective(inv, sql, attr, g, run_id):
     lender, prod, reg = pool_from_node(inv["level"], inv["node"]); month = MS(inv["month"]); b = inv["bucket_from"]; metric = inv["metric"]
-    prof = DP.profile(lender, month, b, metric, prod, reg, g=g, recent=1); sl = prof["slices"]; scope = " / ".join(x for x in [prod, reg] if x) or "all products and regions"
+    prof = DP.profile(lender, month, b, metric, prod, reg, g=g, recent=1, direction=inv.get("direction"), rank="z"); sl = prof["slices"]; scope = " / ".join(x for x in [prod, reg] if x) or "all products and regions"
     ev, drivers, unexpl = [], [], None
     where = {"lender": lender, **({"product_type": prod} if prod else {}), **({"region": reg} if reg else {})}
     if len(sl):
@@ -53,15 +53,17 @@ def rule_detective(inv, sql, attr, g, run_id):
             if ex and (best is None or abs(ex["z"]) > abs(best[1]["z"])): best = (a, ex)
         if best:
             a, ex = best; ev.append(a["attribution_id"])
-            if dim in NATIVE:
-                filt = f"and product_type='{prod}' " if prod else ""; filt += f"and region='{reg}' " if reg else ""
-                q = sql(f"select {dim} as slice, count(*) as accounts from d1_account_monthly where month_date=date '{month}' and bucket_prev='{b}' {filt}group by 1 order by 2 desc limit 15", f"size of each {DIM_LABEL.get(dim, dim)} group in the pool"); ev.append(q["query_id"]) if q["ok"] else None
+            filt = f"and product_type='{prod}' " if prod else ""; filt += f"and region='{reg}' " if reg else ""
+            if dim in NATIVE: q = sql(f"select {dim} as slice, count(*) as accounts from d1_account_monthly where month_date=date '{month}' and bucket_prev='{b}' {filt}group by 1 order by 2 desc limit 15", f"size of each {DIM_LABEL.get(dim, dim)} group in the pool")
+            else: q = sql(f"select month_date, count(*) as accounts from d1_account_monthly where bucket_prev='{b}' {filt}and month_date <= date '{month}' group by 1 order by 1 desc limit 8", "size of the pool in recent months (the slice is a derived band, so its own size is in the attribution call)")
+            if q["ok"]: ev.append(q["query_id"])
             conf = "medium" if abs(ex["z"]) >= 3 else "low"
-            drivers.append(dict(what=f"movement concentrated in {DIM_LABEL.get(dim, dim)} {val} (mechanism not confirmed by an analyst)", where={**where, "sub_slice": f"{DIM_LABEL.get(dim, dim)} {val}"}, when={"start_month": month[:7], "ongoing": None}, category=DIM_CAT.get(dim, "unexplained"),
+            drivers.append(dict(what=f"movement concentrated in {DIM_LABEL.get(dim, dim)} `{val}` (mechanism not confirmed by an analyst)", where={**where, "sub_slice": f"{DIM_LABEL.get(dim, dim)} `{val}`"},   # slice values go in backticks: they are identifiers (may contain digits), not numbers
+                                 when={"start_month": month[:7], "ongoing": None}, category=DIM_CAT.get(dim, "unexplained"),
                                 evidence_ids=ev, attribution_id=a["attribution_id"], control_group_note="all other accounts in the same pool and period", observed_shape="unknown", confidence=conf))
             unexpl = "the mechanism behind this concentration is not established: the rule-based investigator locates and quantifies movements but cannot name their cause"
     if not drivers: unexpl = "no slice moved significantly more than its control group; the cause of the alarm is not established"
-    clue = f"{DIM_LABEL.get(sl.iloc[0]['dimension'], sl.iloc[0]['dimension'])} {sl.iloc[0]['slice']}" if len(sl) else None
+    clue = f"{DIM_LABEL.get(sl.iloc[0]['dimension'], sl.iloc[0]['dimension'])} `{sl.iloc[0]['slice']}`" if len(sl) else None
     qs = ES.fallback_questions(inv, [clue] if clue else [])
     f = dict(headline=f"{scope} {b} {metric.replace('_', ' ')} moved unusually in {pd.Timestamp(month):%B %Y}", drivers=drivers, rejected_hypotheses=[], unexplained_note=unexpl, escalation_questions=qs)
     errs = det_validate(f, sql, attr)

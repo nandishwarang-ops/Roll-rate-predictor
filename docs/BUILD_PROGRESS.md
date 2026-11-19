@@ -30,6 +30,7 @@
 | 26 | Orchestrator (LangGraph, parallel workers, failure handling) | done; runs offline with a rule-based investigator, LLM Detective used when a key is set | src/orchestrator.py, tests/test_orchestrator.py |
 | 27 | Audit trace and logging | done | src/audit_trace.py, tests/test_audit_trace.py |
 | 28 | Backtest harness with planted shifts | done; results weak (docs/planted_backtest.md) | src/planted.py, src/planted_backtest.py, tests/test_planted.py |
-| 29-31 | remaining | not started (see docs/PROJECT_CONTEXT.md) | |
+| 29 | Threshold tuning and accuracy evaluation | done; see docs/tuning_report.md | src/ensemble_tuning.py, src/tuning.py, src/tuning_report.py |
+| 30-31 | remaining | not started (see docs/PROJECT_CONTEXT.md) | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).

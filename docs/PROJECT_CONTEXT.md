@@ -58,7 +58,7 @@ Repo: github.com/nandishwarang-ops/Roll-rate-predictor (public). Local folder: `
 | 26 | Orchestrator | done; runs offline with a rule-based investigator |
 | 27 | Audit trace and logging | done (committed locally; see section 9) |
 | 28 | Backtest harness with planted shifts | done; **results are weak** (see section 4b) |
-| 29 | Threshold tuning and accuracy evaluation | **not started** |
+| 29 | Threshold tuning and accuracy evaluation | done; one change adopted, most ideas did not help (see section 4c) |
 | 30 | Review portal (run, review, approve, deliver) | **not started** |
 | 31 | End-to-end run, timing check, demo prep | **not started** |
 
@@ -125,6 +125,16 @@ Harness: `src/planted.py` (plant a shift in a scratch copy of one lender's D1/D3
 - Unmodified Jun-Sep 2025: about 1.8 flagged and 0.3 priority investigations per lender-month (upper bound).
 - Implication: the system detects large shifts and reports them honestly, but cannot yet name mid-sized causes from one month of data. Section 29 should extend the profiler to multi-month windows, investigate at the true parent pool, rethink slice screening, and tune detection thresholds. Do not claim cause-naming accuracy in a demo until this is improved.
 
+### 4c. Tuning and accuracy evaluation (section 29)
+
+Report: `docs/tuning_report.md`. Code: `src/ensemble_tuning.py`, `src/tuning.py`, `src/tuning_report.py`. 14 planted scenarios (agency, policy, cohort, city; May/Jun train, Jul test; shifts persist 3 months), one seed. Indicative, not statistical.
+
+- **Adopted:** in the investigator's slice search, keep only slices that move WITH the alarm and rank by evidence (z). A slice and its complement have equal and opposite effects, so the old ranking often put the complement first. Planted slice named top-1: 3/14 -> 8/14 (test month 2/8 -> 6/8). Size error 3.3 pp when named top-1.
+- **Not adopted (negative results):** ensemble reweighting (26.4% vs 25.8% better than seasonal-naive, noise); parent-pool search (ties overall, worse on the test month; kept as `drift_profiler.find_slices`); a 3-month window at T+2 (top-1 only 4/14, cause not found); weak leads (no gain).
+- **Detection thresholds are not the constraint:** 13 settings of z, FDR q, materiality and minimum opening gave identical detection (5/14) and false flags (about 1.2 per lender-month). Detection is limited by the size of the shift relative to the forecast model's own error; it needs a better forecast or longer observation, not different thresholds.
+- Acceptance scorecard (public data): MAPE vs seasonal-naive 25.8% (30% **not met**); detection 5/14; naming 8/14; ranges 78-89% covered; shape classification correct on a high-power pool only; audit and speed requirements met.
+- Side effects of the change: slice identifiers are now written in backticks in the pack (they are labels like `mob_0-3`, not numbers, and the auditor ignores backticked text); the investigator always logs one supporting SQL query so every driver has a Q-id.
+
 ---
 
 ## 5. Architecture and file map
@@ -159,6 +169,7 @@ src/
   orchestrator.py       S26  LangGraph pipeline, rule-based investigator fallback
   audit_trace.py        S27  hash-chained trace
   planted.py, planted_backtest.py, planted_report.py   S28  planted-shift harness
+  ensemble_tuning.py, tuning.py, tuning_report.py       S29  tuning and accuracy evaluation
 tests/   one test file per section (test_*.py) plus fixtures.py
 docs/    DATA_DICTIONARY.md, schema.png, BUILD_PROGRESS.md, backtest and calibration reports, this file
 ```
@@ -188,7 +199,7 @@ Derived tables live in the `mart` schema of `rollrate.duckdb`: `transition_cells
 
 Hooks were added to `SQLTool` and `AttributionTool` (optional `trace`, `id_offset`) and to every orchestrator step. After the change the orchestrator tests (15), SQL tool, attribution, Detective, pack author and document generator tests all still pass.
 
-**Status:** sections 1-27 and this document are on GitHub (commit `a47dc13`). Section 28 is committed locally after that.
+**Status:** sections 1-28 are on GitHub (commit `179e4c4`). Section 29 is committed locally after that.
 
 ---
 
@@ -196,7 +207,7 @@ Hooks were added to `SQLTool` and `AttributionTool` (optional `trace`, `id_offse
 
 1. **Add an API key and run the live Detective, Classifier and pack author.** Expect prompt tuning. `export ANTHROPIC_API_KEY=...` then `.venv/bin/python src/detective.py`, or pass `client=AnthropicClient()` to `RunConfig`. Do not paste keys into chat.
 2. **Section 28: backtest harness with planted shifts.** Inject synthetic shifts into copies of the data (agency contact collapse, policy step, cohort mix change, moved festival) and measure detection rate, false-flag rate, named-driver correctness and dollar-style accuracy. This is the only way to measure the acceptance criteria honestly.
-3. **Section 29: tune thresholds** (detection z, CUSUM, materiality, priority cutoff, classifier prior weights, calibration) using section 28. Revisit the 25.8% vs 30% gap (ideas in section 4).
+3. ~~Section 29: tune thresholds~~ (done, see 4c) -- remaining idea: **tune thresholds** (detection z, CUSUM, materiality, priority cutoff, classifier prior weights, calibration) using section 28. Revisit the 25.8% vs 30% gap (ideas in section 4).
 4. **Hidden-period run.** Never done. Needs a rolling or three-month evaluation protocol decided with the organisers. Questions to confirm with them: scoring mode (rolling one-step vs a 3-month forecast from month 24), scored cells (full matrix vs summaries; rates vs counts), whether D1/D3 for hidden months may be read for leading indicators, and the exact format used to name the seeded driver.
 5. **Section 30 review portal** and **section 31 end-to-end timing and demo.** Add the data-quality PASS/WARN and calibration coverage to the demo narrative; be upfront about the three untested LLM paths and the unmet 30% bar.
 6. **Known limits to disclose:** new loans are assumed at the recent 3-month average; principal per account is held at the origin level; ranges are tuned on 9 origins; the recovery check uses EMI due-day groups as a rough proxy for timing inside the month; leading-scan and forward-calendar tables are rebuilt for the run's cut-off date by `orchestrator.prepare`, which overwrites the earlier global versions.

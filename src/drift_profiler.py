@@ -73,7 +73,9 @@ def feature_drift(df):
                          detail=f"PSI {p_:.3f}, V {v:.2f}; biggest mover {top}: {100*(vb/vb.sum()).get(top,0):.1f}% -> {100*(vc/vc.sum()).get(top,0):.1f}%",
                          p=chi[1] if chi else 1.0, material=(p_ >= 0.15) or (v >= 0.1)))
     return pd.DataFrame(rows).sort_values("effect", ascending=False)
-def slice_shifts(df, metric="roll_forward", min_t=50, min_b=100):
+def slice_shifts(df, metric="roll_forward", min_t=50, min_b=100, direction=None, rank="excess", return_all=False):
+    """direction 'up'/'down': keep only slices whose effect points the same way as the alarm (a slice and its complement mirror each other; the one that moved WITH the alarm is the cause).
+    rank 'excess' (accounts) or 'z' (evidence). return_all=True also returns the unflagged slices (used for weak 'leads')."""
     cur, base = df[df.is_T], df[~df.is_T]; rows = []
     for c in CATS:
         for lvl in df[c].dropna().unique():
@@ -84,20 +86,28 @@ def slice_shifts(df, metric="roll_forward", min_t=50, min_b=100):
             rows.append(dict(dimension=c, slice=str(lvl), n_T=len(sT), rate_base=pB, rate_T=pT, slice_change_pp=100 * (pT - pB), rest_change_pp=100 * (qT - qB),
                              did_pp=100 * did, z=z, p=stats.norm.sf(abs(z)) * 2, excess_accounts=len(sT) * did))
     s = pd.DataFrame(rows)
-    if s.empty: return s
+    if s.empty: return (s, s) if return_all else s
     s["bh"] = bh(s.p.values, 0.10); s["flag"] = s.bh & (s.did_pp.abs() >= np.maximum(1.0, np.minimum(3.0, 25 * s.rate_base))) & (s.excess_accounts.abs() >= 10)   # screening FDR 10%; relative-aware materiality
-    return s.sort_values("excess_accounts", key=abs, ascending=False)
-def profile(lender, month, bucket_from, metric="roll_forward", product=None, region=None, g=None, baseline=6, recent=1, lags=(0, 3)):
+    if direction:
+        sign = 1 if direction == "up" else -1; s = s[np.sign(s.did_pp) == sign]
+    key = (lambda x: x.z.abs()) if rank == "z" else (lambda x: x.excess_accounts.abs())
+    s = s.sort_values(by="z", key=lambda c: -c.abs()) if rank == "z" else s.sort_values("excess_accounts", key=abs, ascending=False)
+    return (s[s.flag], s[~s.flag]) if return_all else s[s.flag]
+def profile(lender, month, bucket_from, metric="roll_forward", product=None, region=None, g=None, baseline=6, recent=1, lags=(0, 3), direction=None, rank="excess", lead_p=0.05):
     """Runs the profile against a recent baseline (lag 0) and an older, uncontaminated baseline (lag 3): a persistent shift that started
-    earlier pollutes the recent baseline, so clues are merged across both and tagged with the baseline that found them."""
-    g = g or GuardedSQL(lender, month, run_id="drift_profiler"); F, S, n = [], [], {}
+    earlier pollutes the recent baseline, so clues are merged across both and tagged with the baseline that found them.
+    Also returns weak LEADS: unflagged slices pointing the alarm's way with unadjusted p < lead_p (hypotheses to ask about, not findings)."""
+    g = g or GuardedSQL(lender, month, run_id="drift_profiler"); F, S, Ld, n = [], [], [], {}
     for lag in lags:
         df = pull(g, month, bucket_from, product, region, baseline, lag, recent); n[lag] = (int(df.is_T.sum()), int((~df.is_T).sum()))
         fd = feature_drift(df); fd["bh"] = bh(fd.p.values); F.append(fd[fd.material & fd.bh].assign(baseline_lag=lag))
-        ss = slice_shifts(df, metric); S.append((ss[ss.flag] if len(ss) else ss).assign(baseline_lag=lag))
+        ss, rest = slice_shifts(df, metric, direction=direction, rank=rank, return_all=True); S.append(ss.assign(baseline_lag=lag) if len(ss) else ss)
+        if len(rest): Ld.append(rest[(rest.p < lead_p) & (rest.n_T >= 50)].assign(baseline_lag=lag))
     f = pd.concat(F).sort_values("effect", ascending=False).drop_duplicates("feature") if F else pd.DataFrame()
-    s_ = pd.concat(S); s_ = s_.sort_values("excess_accounts", key=abs, ascending=False).drop_duplicates(["dimension", "slice"]) if len(s_) else s_
-    return dict(n=n, features=f, slices=s_)
+    s_ = pd.concat(S) if any(len(x) for x in S) else pd.DataFrame()
+    if len(s_): s_ = (s_.sort_values("z", key=lambda c: -c.abs()) if rank == "z" else s_.sort_values("excess_accounts", key=abs, ascending=False)).drop_duplicates(["dimension", "slice"])
+    leads = pd.concat(Ld).sort_values("z", key=lambda c: -c.abs()).drop_duplicates(["dimension", "slice"]) if Ld and any(len(x) for x in Ld) else pd.DataFrame()
+    return dict(n=n, features=f, slices=s_, leads=leads)
 if __name__ == "__main__":
     pd.set_option("display.width", 250); pd.set_option("display.max_colwidth", 70)
     cases = [("Surat cash crunch, peak month (LENDER_A BUSINESS_LOAN WEST CURRENT)", "LENDER_A", "2024-10-01", "CURRENT", "roll_forward", "BUSINESS_LOAN", "WEST", 1),
@@ -108,3 +118,23 @@ if __name__ == "__main__":
         res = profile(l, m, b, met, p, r, recent=rec); print(f"\n===== {name} | {m} | pools (T, base) by lag: {res['n']}")
         print("-- feature drift"); print(res["features"][["feature", "effect", "direction", "detail", "baseline_lag"]].head(5).round(3).to_string(index=False) if len(res["features"]) else "(none)")
         print("-- slice shifts"); print(res["slices"][["dimension", "slice", "n_T", "rate_base", "rate_T", "did_pp", "z", "excess_accounts", "baseline_lag"]].head(5).round(2).to_string(index=False) if len(res["slices"]) else "(none)")
+# ------------------------------------------------------------------ search over the flagged pool AND its parents
+def pool_candidates(level, node):
+    """pools to profile for an investigation: the flagged pool first, then its parents up to the whole lender."""
+    p = node.split("|")
+    if level == "segment": return [(p[1], p[2]), (p[1], None), (None, p[2]), (None, None)]
+    if level == "lender_product": return [(p[1], None), (None, None)]
+    if level == "lender_region": return [(None, p[1]), (None, None)]
+    return [(None, None)]
+def find_slices(g, lender, month, bucket, metric, level, node, direction=None, recent=1, lags=(0, 3), expand=True, rank="z"):
+    """profile the flagged pool and (if expand) its parents; keep the pool whose strongest flagged slice has the largest |z|. A sub-pool can hide an effect that is
+    obvious one level up (an agency's effect spread over several products), and a parent can dilute one that is concentrated lower."""
+    cands = pool_candidates(level, node) if expand else pool_candidates(level, node)[:1]; best, leads = None, []
+    for prod, reg in cands:
+        r = profile(lender, month, bucket, metric, prod, reg, g=g.fork() if hasattr(g, "fork") else g, recent=recent, lags=lags, direction=direction, rank=rank)
+        sc = float(abs(r["slices"].z.iloc[0])) if len(r["slices"]) else 0.0
+        if len(r["leads"]): leads.append(r["leads"].assign(pool=f"{prod or 'ALL'}|{reg or 'ALL'}"))
+        if best is None or sc > best[0]: best = (sc, (prod, reg), r)
+    out = dict(best[2]); out["pool"] = best[1]; out["pools_tried"] = len(cands)
+    if not len(out["slices"]) and leads: out["leads"] = pd.concat(leads).sort_values("z", key=lambda c: -c.abs()).drop_duplicates(["dimension", "slice"])
+    return out
