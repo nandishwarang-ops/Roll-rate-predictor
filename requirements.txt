@@ -1,6 +1,7 @@
 anthropic
 anthropic==0.125.0
 duckdb==1.4.5
+matplotlib
 pandas==2.3.3
 pyarrow==21.0.0
 scikit-learn==1.6.1

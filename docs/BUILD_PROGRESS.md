@@ -24,6 +24,7 @@
 | 20 | Multi-month chaining (3-month outlook) | done | src/chaining.py, tests/test_chaining.py, docs/chaining_backtest.md |
 | 21 | Range calibration and simulation-based aggregate ranges | done (coverage 78-89% vs 80% target; leave-one-origin-out) | src/ranges.py, src/ranges_backtest.py, tests/test_ranges.py, docs/range_calibration.md |
 | 22 | Portfolio roll-up (product, region, lender) | done | src/rollup.py, tests/test_rollup.py |
-| 23-31 | remaining | not started | |
+| 23 | Chart generation | done (4 charts + table view + alt text; palette validator not run: node missing) | src/charts.py, tests/test_charts.py |
+| 24-31 | remaining | not started | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).
