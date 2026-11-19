@@ -57,7 +57,7 @@ Repo: github.com/nandishwarang-ops/Roll-rate-predictor (public). Local folder: `
 | 25 | Document generator (PDF + Markdown) | done |
 | 26 | Orchestrator | done; runs offline with a rule-based investigator |
 | 27 | Audit trace and logging | done (committed locally; see section 9) |
-| 28 | Backtest harness with planted shifts | **not started** |
+| 28 | Backtest harness with planted shifts | done; **results are weak** (see section 4b) |
 | 29 | Threshold tuning and accuracy evaluation | **not started** |
 | 30 | Review portal (run, review, approve, deliver) | **not started** |
 | 31 | End-to-end run, timing check, demo prep | **not started** |
@@ -114,6 +114,17 @@ The brief asks for 30%. The ensemble is about 4 points short. Part of the gap is
 
 **Orchestrator (section 26).** One lender-month in about 34 s; three lenders in parallel in about 126 s (vs about 374-430 s sequential). 30-minute target met by a wide margin.
 
+### 4b. Planted-shift backtest (section 28), the first honest measurement
+
+Harness: `src/planted.py` (plant a shift in a scratch copy of one lender's D1/D3, rebuild bucket flows and matrices), `src/planted_backtest.py` (runner), `src/planted_report.py`, report in `docs/planted_backtest.md`. 5 shift types x 2 sizes plus lifecycle runs, July 2025, one seed, rule-based investigator.
+
+- Detected: 3 of 5 at full size, 2 of 5 at half size (missed: weak cohort 0.7 pp pool effect, city shock 1.0 pp, half-size policy step). Lender-wide shifts as small as 0.6 pp are detected (big pool).
+- Naming the planted slice: **0 of 3** where a slice exists. On a single month of about 600 accounts the profiler flags nothing for the agency and policy shifts (a 10-point effect is about 2.3 sigma; the false-discovery correction across about 100 slices removes it). With the true pool the cohort and city slices reach the top 3 but not top 1.
+- Size accuracy: off by 13-14 points where the wrong slice was quantified.
+- Shape classification: 3 of 3 correct on a high-power pool; wrong on the noisy pool (persistent step closed as a blip).
+- Unmodified Jun-Sep 2025: about 1.8 flagged and 0.3 priority investigations per lender-month (upper bound).
+- Implication: the system detects large shifts and reports them honestly, but cannot yet name mid-sized causes from one month of data. Section 29 should extend the profiler to multi-month windows, investigate at the true parent pool, rethink slice screening, and tune detection thresholds. Do not claim cause-naming accuracy in a demo until this is improved.
+
 ---
 
 ## 5. Architecture and file map
@@ -147,6 +158,7 @@ src/
   doc_generator.py      S25  pack.pdf, pack.md, charts, evidence.json, manifest.json
   orchestrator.py       S26  LangGraph pipeline, rule-based investigator fallback
   audit_trace.py        S27  hash-chained trace
+  planted.py, planted_backtest.py, planted_report.py   S28  planted-shift harness
 tests/   one test file per section (test_*.py) plus fixtures.py
 docs/    DATA_DICTIONARY.md, schema.png, BUILD_PROGRESS.md, backtest and calibration reports, this file
 ```
@@ -176,7 +188,7 @@ Derived tables live in the `mart` schema of `rollrate.duckdb`: `transition_cells
 
 Hooks were added to `SQLTool` and `AttributionTool` (optional `trace`, `id_offset`) and to every orchestrator step. After the change the orchestrator tests (15), SQL tool, attribution, Detective, pack author and document generator tests all still pass.
 
-**Status when this file was written: section 27 and this document are committed locally, not pushed.** Sections up to 26 are on GitHub (last pushed commit `aaeda32`).
+**Status:** sections 1-27 and this document are on GitHub (commit `a47dc13`). Section 28 is committed locally after that.
 
 ---
 

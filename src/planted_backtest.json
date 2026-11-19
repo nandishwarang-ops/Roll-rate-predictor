@@ -1,0 +1,489 @@
+{
+ "scenarios": [
+  {
+   "name": "agency",
+   "kind": "agency contact collapse",
+   "size": "base",
+   "planted_slice_pp": 10.029498525073747,
+   "planted_pool_pp": 5.483870967741935,
+   "n_slice": 339,
+   "n_pool": 620,
+   "detected_any": true,
+   "detected_priority": true,
+   "level": "segment",
+   "node": "LENDER_A|BUSINESS_LOAN|WEST",
+   "z": 4.221733968204925,
+   "diff_pp": 14.797388333127126,
+   "named_slices": [
+    "agency AG_W_TELE_01"
+   ],
+   "unexplained": true,
+   "top3_slices": [],
+   "named_correct_top1": false,
+   "named_correct_top3": false,
+   "engine_excess_pp": 23.35249075359752,
+   "excess_err_pp": 13.322992228523775,
+   "secs": 1.2
+  },
+  {
+   "name": "policy",
+   "kind": "field-visit policy on small EMIs",
+   "size": "base",
+   "planted_slice_pp": 8.004926108374384,
+   "planted_pool_pp": 6.487025948103793,
+   "n_slice": 812,
+   "n_pool": 1002,
+   "detected_any": true,
+   "detected_priority": true,
+   "level": "lender",
+   "node": "LENDER_B",
+   "z": 2.6174712577543406,
+   "diff_pp": 5.87573587121939,
+   "named_slices": [],
+   "unexplained": true,
+   "top3_slices": [],
+   "named_correct_top1": false,
+   "named_correct_top3": false,
+   "secs": 1.6
+  },
+  {
+   "name": "cohort",
+   "kind": "weak new-to-credit cohort",
+   "size": "base",
+   "planted_slice_pp": 14.98147167813658,
+   "planted_pool_pp": 0.7162018525079719,
+   "n_slice": 1889,
+   "n_pool": 39514,
+   "detected_any": false,
+   "detected_priority": false,
+   "secs": 0.2
+  },
+  {
+   "name": "festival",
+   "kind": "moved festival (lender-wide)",
+   "size": "base",
+   "planted_slice_pp": 1.1999863637913206,
+   "planted_pool_pp": 1.1999863637913206,
+   "n_slice": 88001,
+   "n_pool": 88001,
+   "detected_any": true,
+   "detected_priority": true,
+   "level": "lender",
+   "node": "LENDER_A",
+   "z": 4.74593520411952,
+   "diff_pp": 1.1517209807736968,
+   "named_slices": [],
+   "unexplained": true,
+   "top3_slices": [],
+   "named_correct_top1": null,
+   "named_correct_top3": null,
+   "secs": 47.2
+  },
+  {
+   "name": "city",
+   "kind": "city cash-crunch",
+   "size": "base",
+   "planted_slice_pp": 5.985205110961668,
+   "planted_pool_pp": 0.9755562863093281,
+   "n_slice": 1487,
+   "n_pool": 9123,
+   "detected_any": false,
+   "detected_priority": false,
+   "secs": 0.3
+  },
+  {
+   "name": "agency_half",
+   "kind": "agency contact collapse",
+   "size": "half",
+   "planted_slice_pp": 5.014749262536873,
+   "planted_pool_pp": 2.7419354838709675,
+   "n_slice": 339,
+   "n_pool": 620,
+   "detected_any": true,
+   "detected_priority": true,
+   "level": "segment",
+   "node": "LENDER_A|BUSINESS_LOAN|WEST",
+   "z": 3.6511286866291655,
+   "diff_pp": 12.797388333127124,
+   "named_slices": [
+    "agency AG_W_TELE_01"
+   ],
+   "unexplained": true,
+   "top3_slices": [],
+   "named_correct_top1": false,
+   "named_correct_top3": false,
+   "engine_excess_pp": 19.430922126146545,
+   "excess_err_pp": 14.41617286360967,
+   "secs": 1.1
+  },
+  {
+   "name": "policy_half",
+   "kind": "field-visit policy on small EMIs",
+   "size": "half",
+   "planted_slice_pp": 3.9408866995073892,
+   "planted_pool_pp": 3.193612774451098,
+   "n_slice": 812,
+   "n_pool": 1002,
+   "detected_any": false,
+   "detected_priority": false,
+   "secs": 0.2
+  },
+  {
+   "name": "cohort_half",
+   "kind": "weak new-to-credit cohort",
+   "size": "half",
+   "planted_slice_pp": 7.517204870301747,
+   "planted_pool_pp": 0.3593663005517032,
+   "n_slice": 1889,
+   "n_pool": 39514,
+   "detected_any": false,
+   "detected_priority": false,
+   "secs": 0.2
+  },
+  {
+   "name": "festival_half",
+   "kind": "moved festival (lender-wide)",
+   "size": "half",
+   "planted_slice_pp": 0.5999931818956603,
+   "planted_pool_pp": 0.5999931818956603,
+   "n_slice": 88001,
+   "n_pool": 88001,
+   "detected_any": true,
+   "detected_priority": true,
+   "level": "lender_product",
+   "node": "LENDER_A|PERSONAL_LOAN",
+   "z": 2.809383330981091,
+   "diff_pp": 0.57453360171063,
+   "named_slices": [],
+   "unexplained": true,
+   "top3_slices": [],
+   "named_correct_top1": null,
+   "named_correct_top3": null,
+   "secs": 33.6
+  },
+  {
+   "name": "city_half",
+   "kind": "city cash-crunch",
+   "size": "half",
+   "planted_slice_pp": 3.0262273032952254,
+   "planted_pool_pp": 0.49325879644853665,
+   "n_slice": 1487,
+   "n_pool": 9123,
+   "detected_any": false,
+   "detected_priority": false,
+   "secs": 0.3
+  }
+ ],
+ "lifecycle": [
+  {
+   "name": "step_bigpool",
+   "expected": [
+    "persistent"
+   ],
+   "status": "persistent",
+   "ok": true,
+   "history": [
+    [
+     [
+      "persistent",
+      "effect persisted: 87% of first-seen effect, z=12.1"
+     ]
+    ],
+    [
+     [
+      "persistent",
+      "still 54% of first-seen effect, z=7.2"
+     ]
+    ]
+   ]
+  },
+  {
+   "name": "transient_bigpool",
+   "expected": [
+    "closed_transient",
+    "fading"
+   ],
+   "status": "closed_transient",
+   "ok": true,
+   "history": [
+    [
+     [
+      "fading",
+      "effect weakening: 42% of first-seen effect, z=5.9"
+     ]
+    ],
+    [
+     [
+      "closed_transient",
+      "faded out (-13%, z=-1.9)"
+     ]
+    ]
+   ]
+  },
+  {
+   "name": "dot_bigpool",
+   "expected": [
+    "closed_transient"
+   ],
+   "status": "closed_transient",
+   "ok": true,
+   "history": [
+    [
+     [
+      "closed_transient",
+      "effect gone after first month: -3% of first-seen effect, z=-0.4"
+     ]
+    ],
+    []
+   ]
+  },
+  {
+   "name": "step",
+   "expected": [
+    "persistent"
+   ],
+   "status": "closed_transient",
+   "ok": false,
+   "history": [
+    [
+     [
+      "open",
+      "inconclusive (effect 159% of first-seen but z=1.7); stays open"
+     ]
+    ],
+    [
+     [
+      "closed_transient",
+      "effect gone after first month: 47% of first-seen effect, z=0.5"
+     ]
+    ]
+   ]
+  },
+  {
+   "name": "transient",
+   "expected": [
+    "closed_transient",
+    "fading"
+   ],
+   "status": "closed_transient",
+   "ok": true,
+   "history": [
+    [
+     [
+      "closed_transient",
+      "effect gone after first month: 48% of first-seen effect, z=0.5"
+     ]
+    ],
+    []
+   ]
+  },
+  {
+   "name": "dot",
+   "expected": [
+    "closed_transient"
+   ],
+   "status": "closed_transient",
+   "ok": true,
+   "history": [
+    [
+     [
+      "closed_transient",
+      "effect gone after first month: -62% of first-seen effect, z=-0.7"
+     ]
+    ],
+    []
+   ]
+  }
+ ],
+ "diagnostics": [
+  {
+   "name": "agency",
+   "top3": [],
+   "top1_correct": false,
+   "top3_correct": false,
+   "n_flagged": 0
+  },
+  {
+   "name": "policy",
+   "top3": [],
+   "top1_correct": false,
+   "top3_correct": false,
+   "n_flagged": 0
+  },
+  {
+   "name": "cohort",
+   "top3": [
+    [
+     "ntc_flag",
+     "false",
+     -4.5,
+     -8.7
+    ],
+    [
+     "mob_band",
+     "mob_4-6",
+     8.7,
+     18.5
+    ],
+    [
+     "bureau_band",
+     "bureau_720+",
+     1.1,
+     3.7
+    ]
+   ],
+   "top1_correct": false,
+   "top3_correct": true,
+   "n_flagged": 8
+  },
+  {
+   "name": "city",
+   "top3": [
+    [
+     "state",
+     "Gujarat",
+     3.1,
+     6.4
+    ],
+    [
+     "state",
+     "Maharashtra",
+     -2.1,
+     -4.7
+    ],
+    [
+     "city",
+     "Surat",
+     5.8,
+     7.3
+    ]
+   ],
+   "top1_correct": false,
+   "top3_correct": true,
+   "n_flagged": 6
+  },
+  {
+   "name": "agency_half",
+   "top3": [],
+   "top1_correct": false,
+   "top3_correct": false,
+   "n_flagged": 0
+  },
+  {
+   "name": "policy_half",
+   "top3": [],
+   "top1_correct": false,
+   "top3_correct": false,
+   "n_flagged": 0
+  },
+  {
+   "name": "cohort_half",
+   "top3": [
+    [
+     "ntc_flag",
+     "false",
+     -1.7,
+     -3.6
+    ],
+    [
+     "mob_band",
+     "mob_4-6",
+     6.8,
+     15.5
+    ],
+    [
+     "mob_band",
+     "mob_0-3",
+     -5.4,
+     -15.2
+    ]
+   ],
+   "top1_correct": false,
+   "top3_correct": true,
+   "n_flagged": 4
+  },
+  {
+   "name": "city_half",
+   "top3": [
+    [
+     "state",
+     "Gujarat",
+     1.9,
+     4.1
+    ],
+    [
+     "state",
+     "Maharashtra",
+     -1.1,
+     -2.7
+    ],
+    [
+     "city",
+     "Surat",
+     2.8,
+     4.2
+    ]
+   ],
+   "top1_correct": false,
+   "top3_correct": true,
+   "n_flagged": 5
+  }
+ ],
+ "false_flags": [
+  {
+   "lender": "LENDER_A",
+   "month": "2025-07-01 00:00:00",
+   "all_flags": 1,
+   "priority_flags": 0
+  },
+  {
+   "lender": "LENDER_B",
+   "month": "2025-06-01 00:00:00",
+   "all_flags": 1,
+   "priority_flags": 1
+  },
+  {
+   "lender": "LENDER_B",
+   "month": "2025-07-01 00:00:00",
+   "all_flags": 1,
+   "priority_flags": 0
+  },
+  {
+   "lender": "LENDER_B",
+   "month": "2025-08-01 00:00:00",
+   "all_flags": 3,
+   "priority_flags": 0
+  },
+  {
+   "lender": "LENDER_B",
+   "month": "2025-09-01 00:00:00",
+   "all_flags": 1,
+   "priority_flags": 0
+  },
+  {
+   "lender": "LENDER_C",
+   "month": "2025-06-01 00:00:00",
+   "all_flags": 4,
+   "priority_flags": 1
+  },
+  {
+   "lender": "LENDER_C",
+   "month": "2025-07-01 00:00:00",
+   "all_flags": 1,
+   "priority_flags": 1
+  },
+  {
+   "lender": "LENDER_C",
+   "month": "2025-08-01 00:00:00",
+   "all_flags": 1,
+   "priority_flags": 0
+  },
+  {
+   "lender": "LENDER_C",
+   "month": "2025-09-01 00:00:00",
+   "all_flags": 3,
+   "priority_flags": 0
+  }
+ ],
+ "secs": 123
+}
