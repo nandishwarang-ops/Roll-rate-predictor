@@ -1,4 +1,4 @@
-"""Section 6: seasonal-naive benchmark (and plain-naive reference).
+"""Section 7: seasonal-naive benchmark (and plain-naive reference).
 Forecast for month m = the same segment / bucket_from / bucket_to rate in month m-12 (seasonal naive),
 or in month m-1 (naive). Scored against actuals on the last N public months.
 Metrics: MAPE (cells with actual rate > 0 and >= MIN_OPEN opening accounts) and WAPE (count-weighted, robust to tiny rates).

@@ -1,4 +1,4 @@
-"""Section 5: full transition-matrix builder.
+"""Section 6: full transition-matrix builder.
 Builds mart.transition_cells: a DENSE grid (zeros filled) of
   lender x product x region x month x bucket_from x bucket_to -> account_count, pos, rate_count, rate_pos.
 Plus mart.move_summary: forward / stay / cure / closed / written_off share per row, and mart.transition_levels
