@@ -1,6 +1,7 @@
 import sys, pathlib; sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 from sql_tool import SQLTool
 ok = lambda n, c: print(("PASS " if c else "FAIL ") + n) or c
+(pathlib.Path(__file__).resolve().parent.parent / "outputs/audit/test_sql_tool.jsonl").unlink(missing_ok=True)   # audit files append across runs
 t = SQLTool("LENDER_B", "2025-09-01", run_id="test_sql_tool", budget=8, max_rows=5, timeout_s=3)
 r = []
 a = t("select bucket_prev, count(*) n from d1_account_monthly where month_date=date '2025-09-01' group by 1 order by 2 desc", "bucket mix")

@@ -28,6 +28,7 @@
 | 24 | Agent 3: Review Pack Author and numeric auditor | done; template author + auditor fully tested, live LLM author pending ANTHROPIC_API_KEY | src/pack_author.py, tests/test_pack_author.py |
 | 25 | Document generator (PDF + Markdown pack) | done | src/doc_generator.py, tests/test_doc_generator.py, tests/fixtures.py |
 | 26 | Orchestrator (LangGraph, parallel workers, failure handling) | done; runs offline with a rule-based investigator, LLM Detective used when a key is set | src/orchestrator.py, tests/test_orchestrator.py |
-| 27-31 | remaining | not started | |
+| 27 | Audit trace and logging | done | src/audit_trace.py, tests/test_audit_trace.py |
+| 28-31 | remaining | not started (see docs/PROJECT_CONTEXT.md) | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).

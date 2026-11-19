@@ -91,9 +91,9 @@ SPEC = {"name": "attribute_change", "description": "Deterministic calculator: ho
             "control": {"type": "object", "description": "optional {dimension, values}; default is the rest of the pool"}, "partition_dimension": {"type": "string", "description": "for the mix-vs-rate split, e.g. agency_id"}}}}
 class AttributionTool:
     spec = SPEC
-    def __init__(self, lender_id, as_of, run_id="run", g=None, audit_dir=root / "outputs/audit"):
+    def __init__(self, lender_id, as_of, run_id="run", g=None, audit_dir=root / "outputs/audit", id_offset=0, trace=None):
         from guarded_sql import GuardedSQL
-        self.g = g or GuardedSQL(lender_id, as_of, run_id=run_id); self.run_id, self.n = run_id, 0
+        self.g = g or GuardedSQL(lender_id, as_of, run_id=run_id); self.run_id, self.n, self.id_offset, self.trace = run_id, 0, id_offset, trace
         audit_dir.mkdir(parents=True, exist_ok=True); self.path = audit_dir / f"{run_id}.jsonl"; self.evidence = {}
     def __call__(self, month, bucket_from, metric, causes, product_type=None, region=None, recent_months=1, baseline_lag=0, control=None, partition_dimension=None):
         import drift_profiler as dp
@@ -104,10 +104,13 @@ class AttributionTool:
             if df.is_T.sum() == 0: return {"ok": False, "error": "no accounts in the current window for this pool"}
             res = attribute(df, metric, causes, control, partition_dimension)
         except Exception as e: return {"ok": False, "error": str(e).splitlines()[0]}
-        self.n += 1; aid = f"A{self.n:03d}"
+        self.n += 1; aid = f"A{self.n + self.id_offset:03d}"
         res = {"ok": True, "attribution_id": aid, **res, "args": dict(month=month, bucket_from=bucket_from, metric=metric, product_type=product_type, region=region,
                recent_months=recent_months, baseline_lag=baseline_lag, causes=causes, control=control)}
         self.evidence[aid] = res
+        if self.trace:
+            cz = {k: {x: v.get(x) for x in ("status", "contribution_pp", "share_of_change", "n_T")} for k, v in res["causes"].items()}
+            self.trace.emit("attribution", "investigate", "code", f"{aid} {metric} {bucket_from} observed {res['observed_change_pp']:+.2f}pp", {"attribution_id": aid, "tool_run": self.run_id, "args": res["args"], "observed_change_pp": res["observed_change_pp"], "causes": cz, "warnings": res["warnings"], "result_sha": __import__("hashlib").sha1(json.dumps(res, default=str, sort_keys=True).encode()).hexdigest()[:12]})
         with open(self.path, "a") as f: f.write(json.dumps({"run_id": self.run_id, "attribution_id": aid, "ts": datetime.datetime.now().isoformat(timespec="seconds"),
               "args": dict(month=month, bucket_from=bucket_from, metric=metric, product_type=product_type, region=region, recent_months=recent_months, baseline_lag=baseline_lag, causes=causes, control=control), "result": res}, default=str) + "\n")
         return res

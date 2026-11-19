@@ -24,9 +24,9 @@ SPEC = {"name": "run_sql", "description": "Run ONE read-only SQL SELECT (DuckDB 
         "input_schema": {"type": "object", "properties": {"sql": {"type": "string", "description": "A single SELECT or WITH ... SELECT statement. Aggregate in SQL; results are capped."},
                                                            "purpose": {"type": "string", "description": "One line: which hypothesis or number this query tests."}}, "required": ["sql", "purpose"]}}
 class SQLTool:
-    def __init__(self, lender_id, as_of, run_id="run", budget=40, max_rows=100, timeout_s=20, g=None, audit_dir=root / "outputs/audit"):
+    def __init__(self, lender_id, as_of, run_id="run", budget=40, max_rows=100, timeout_s=20, g=None, audit_dir=root / "outputs/audit", id_offset=0, trace=None):
         self.g = g or GuardedSQL(lender_id, as_of, run_id=run_id); self.run_id, self.budget, self.max_rows, self.timeout_s = run_id, budget, max_rows, timeout_s
-        self.used, self.evidence, self._cache = 0, {}, {}
+        self.used, self.evidence, self._cache = 0, {}, {}; self.id_offset, self.trace = id_offset, trace
         audit_dir.mkdir(parents=True, exist_ok=True); self.audit_path = audit_dir / f"{run_id}.jsonl"
     spec = SPEC
     def schema_text(self):
@@ -46,7 +46,7 @@ class SQLTool:
         key = hashlib.sha1(re.sub(r"\s+", " ", sql.strip().rstrip(";")).lower().encode()).hexdigest()
         if key in self._cache: return {**self._cache[key], "note": "identical query already run; cached result"}
         if self.used >= self.budget: return {"ok": False, "error": f"query budget of {self.budget} used up; stop investigating and report what you have"}
-        self.used += 1; qid = f"Q{self.used:03d}"; ts = datetime.datetime.now().isoformat(timespec="seconds")
+        self.used += 1; qid = f"Q{self.used + self.id_offset:03d}"; ts = datetime.datetime.now().isoformat(timespec="seconds")
         base = {"query_id": qid, "remaining_budget": self.budget - self.used}
         if len(sql) > 4000: res = {"ok": False, "error": "query too long (max 4000 characters)"}
         else:
@@ -64,6 +64,7 @@ class SQLTool:
         self.evidence[qid] = {"sql": sql, "purpose": purpose, "ts": ts, "ok": res["ok"], "result": {k: res.get(k) for k in ("columns", "rows", "row_count", "error")}}
         self._log({"run_id": self.run_id, "query_id": qid, "ts": ts, "lender": self.g.lender_id, "as_of": self.g.as_of, "purpose": purpose, "sql": sql,
                    "ok": res["ok"], "row_count": res.get("row_count"), "error": res.get("error")})
+        if self.trace: self.trace.emit("query", "investigate", "code", f"{qid} {'ok' if res['ok'] else 'rejected'}: {purpose}"[:200], {"query_id": qid, "tool_run": self.run_id, "purpose": purpose, "sql": sql[:1500], "sql_sha": hashlib.sha1(sql.encode()).hexdigest()[:12], "ok": res["ok"], "row_count": res.get("row_count"), "error": res.get("error"), "result_sha": hashlib.sha1(json.dumps(res.get("rows"), default=str).encode()).hexdigest()[:12] if res["ok"] else None})
         if res["ok"]: self._cache[key] = res
         return res
     def as_text(self, res):

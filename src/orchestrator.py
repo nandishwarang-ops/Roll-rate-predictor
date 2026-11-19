@@ -21,6 +21,7 @@ from guarded_sql import GuardedSQL
 from sql_tool import SQLTool
 from attribution import AttributionTool
 from detective import run_detective, validate as det_validate, pool_from_node
+from audit_trace import Trace, TracedClient, code_version, data_fingerprint, sha, report as trace_report
 from langgraph.graph import StateGraph, END
 root = pathlib.Path(__file__).resolve().parent.parent
 DB = root / "rollrate.duckdb"
@@ -74,8 +75,9 @@ class Run:
         self.cfg = cfg; self.L, self.O = cfg.lender, MS(cfg.origin); self.run_id = f"run_{cfg.lender}_{self.O[:7]}_{datetime.datetime.now():%Y%m%d%H%M%S}"
         self.nodes, self.warnings, self.t0 = [], [], time.time(); self.inv, self.results, self.incomplete, self.active, self.cls, self.outputs = [], [], [], [], {}, {}
         self.out = pathlib.Path(cfg.out_root) / "packs" / f"{cfg.lender}_{self.O[:7]}"; self.con = None; self.g = None
+        self.trace = Trace(self.run_id, cfg.lender, self.O[:7], root_dir=pathlib.Path(cfg.out_root) / "trace")
     def node(self, name, fn, critical=True, fallback=None):
-        t = time.time(); rec = {"node": name, "status": "ok", "secs": None, "error": None}
+        t = time.time(); rec = {"node": name, "status": "ok", "secs": None, "error": None}; self.trace.emit("step_start", name, "system", f"start {name}")
         try: fn()
         except Exception as e:
             rec["status"] = "failed" if critical else "degraded"; rec["error"] = f"{type(e).__name__}: {e}"; rec["trace"] = traceback.format_exc(limit=3)
@@ -85,6 +87,7 @@ class Run:
                     try: fallback()
                     except Exception as e2: rec["status"] = "failed"; rec["error"] += f" | fallback failed: {type(e2).__name__}: {e2}"
         rec["secs"] = round(time.time() - t, 2); self.nodes.append(rec)
+        self.trace.emit("step_end", name, "system", f"{name} {rec['status']}", {"secs": rec["secs"], "status": rec["status"], "error": rec["error"]})
         if rec["status"] == "failed" and critical: raise RuntimeError(f"critical step '{name}' failed: {rec['error']}")
     @property
     def q(self): return lambda s: self.con.sql(s).df()
@@ -114,8 +117,9 @@ def build_graph(run: Run):
             def work(k, inv):
                 if inj.get("investigate_error") == k: raise RuntimeError("injected investigator crash")
                 if inj.get("investigate_slow") == k: time.sleep(cfg.investigation_timeout + 5)
-                g = run.g.fork(); rid = f"{run.run_id}_i{k}"; sql = SQLTool(run.L, run.O, run_id=rid, g=g); attr = AttributionTool(run.L, run.O, run_id=rid, g=g)
-                if cfg.client is not None: return run_detective(inv, cfg.client, run.con.cursor(), sql_tool=sql, attr_tool=attr, run_id=rid)
+                g = run.g.fork(); rid = f"{run.run_id}_i{k}"; off = (k + 1) * 100      # evidence ids are unique across the whole run: investigation k uses Q/A<k+1>01...
+                sql = SQLTool(run.L, run.O, run_id=rid, g=g, id_offset=off, trace=run.trace); attr = AttributionTool(run.L, run.O, run_id=rid, g=g, id_offset=off, trace=run.trace)
+                if cfg.client is not None: return run_detective(inv, TracedClient(cfg.client, run.trace, f"investigate_i{k}"), run.con.cursor(), sql_tool=sql, attr_tool=attr, run_id=rid)
                 return rule_detective(inv, sql, attr, g, rid)
             with ThreadPoolExecutor(max_workers=cfg.workers) as ex:
                 futs = [(k, inv, ex.submit(work, k, inv)) for k, inv in enumerate(run.inv)]
@@ -127,34 +131,43 @@ def build_graph(run: Run):
                     r["label"] = label; r.setdefault("investigation", inv)
                     if r["status"] != "complete": run.incomplete.append(label); run.warnings.append(f"investigation incomplete: {label} ({r.get('reason')})")
                     run.results.append(r)
+                    run.trace.emit("investigation", "investigate", "llm" if cfg.client else "code", f"{label}: {r['status']}", {"label": label, "status": r["status"], "source": r.get("source", "llm" if cfg.client else None), "reason": r.get("reason"), "drivers": [{"what": d["what"], "category": d["category"], "confidence": d["confidence"], "evidence_ids": d["evidence_ids"]} for d in r.get("findings", {}).get("drivers", [])], "unexplained": r.get("findings", {}).get("unexplained_note"), "queries_used": r.get("queries_used")})
         run.node("investigate", f, critical=False); return {"stage": "investigate"}
     def registry(state):
         def f():
-            run.attr = AttributionTool(run.L, run.O, run_id=run.run_id + "_reg", g=run.g.fork()); sp = cfg.state_path
+            run.attr = AttributionTool(run.L, run.O, run_id=run.run_id + "_reg", g=run.g.fork(), id_offset=900, trace=run.trace); sp = cfg.state_path
             run.recheck = R.recheck_all(run.L, run.O, run.attr, sp, run.run_id)
+            for x in run.recheck: run.trace.emit("registry", "registry_classify", "code", f"recheck {x['driver_id']}: {x.get('status')}", x)
             run.reg = []
             for r in run.results:
                 if r["status"] != "complete": continue
                 res = {**r, "investigation": r["investigation"]}; ev = r["evidence"]; led = {k: v for k, v in ev.items() if k.startswith("A")}
                 for did, kind in R.register_from_result(res, led, sp, run.run_id):
+                    run.trace.emit("registry", "registry_classify", "code", f"driver {did} {kind}", {"driver_id": did, "event": kind})
                     d = next(x for x in r["findings"]["drivers"] if x.get("attribution_id") in led); run.reg.append((did, kind, d, led[d["attribution_id"]], r))
             c = R._con(sp); run.active = [x[0] for x in c.sql("select driver_id from drivers where lender_id=? and status in ('open','persistent','fading') order by first_seen", params=[run.L]).fetchall()]; c.close()
             for did in run.active:
-                try: run.cls[did] = CL.classify_driver(did, run.g.fork(), run.O, client=cfg.client, state=sp)
+                try: run.cls[did] = CL.classify_driver(did, run.g.fork(), run.O, client=TracedClient(cfg.client, run.trace, f"classify_{did}") if cfg.client else None, state=sp)
                 except Exception as e: run.warnings.append(f"classifier failed for {did} ({e}); using the deterministic prior"); d, o = CL.get_driver(did, sp); run.cls[did] = CL.prior(d, o)
-        run.node("registry_classify", f, critical=False); return {"stage": "registry_classify"}
+        def f2():
+            f()
+            for did, c in run.cls.items(): run.trace.emit("classification", "registry_classify", c.get("source", "code") if c.get("source") == "llm" else "code", f"{did}: " + ", ".join(f"{x['name']} {x['weight']:.0%}" for x in c["scenarios"]), {"driver_id": did, "source": c.get("source"), "scenarios": c["scenarios"], "agrees_with_prior": c.get("agrees_with_prior"), "widen_ranges": c.get("widen_ranges"), "rationale": c.get("rationale")})
+        run.node("registry_classify", f2, critical=False); return {"stage": "registry_classify"}
     def escalate(state):
         def f():
             disp = ES.Dispatcher(cfg.notifier or ES.FileOutbox(pathlib.Path(cfg.out_root) / "outbox"), state=cfg.state_path)
             for r in run.results:
-                if r["status"] == "complete": ES.create_from_result(r, disp, cfg.state_path, clues=[])
+                if r["status"] == "complete":
+                    e = ES.create_from_result(r, disp, cfg.state_path, clues=[])
+                    if e: run.trace.emit("escalation", "escalate", "code", f"{e['escalation_id']} {'re-asked' if e.get('deduplicated') else 'opened'}", {k: str(v)[:200] for k, v in e.items() if k != 'questions'} | {"n_questions": len(e.get("questions", []))})
             disp.wait(5)
         run.node("escalate", f, critical=False); return {"stage": "escalate"}
     def forecast(state):
         def f():
             if inj.get("forecast_error"): raise RuntimeError("injected forecast-intervention failure")
-            attr = AttributionTool(run.L, run.O, run_id=run.run_id + "_fc", g=run.g.fork())
+            attr = AttributionTool(run.L, run.O, run_id=run.run_id + "_fc", g=run.g.fork(), id_offset=950, trace=run.trace)
             run.fc = IF.forecast_with_interventions(run.L, run.O, run.active, run.con.cursor(), run.g.fork(), attr, classifications=run.cls, state=cfg.state_path, out_dir=pathlib.Path(cfg.out_root) / "forecasts")
+            run.trace.emit("forecast_run", "forecast", "code", f"{run.fc['run_id']} ({len(run.active)} intervention(s))", {"forecast_run_id": run.fc["run_id"], "drivers": [d["driver_id"] for d in run.fc["drivers"]], "measured_effect_pp": {d["driver_id"]: d["measured_effect_pp"] for d in run.fc["drivers"]}})
         def fb():
             hist = IF.history(run.con.cursor(), run.O); hist = hist[hist.lender_id == run.L].copy(); hist["month_date"] = pd.to_datetime(hist.month_date); raw = IF.ensemble(run.con.cursor(), run.O, hist)
             run.fc = {"run_id": f"fc_{run.L}_{run.O[:7]}_baseline", "unadjusted": raw, "counterfactual": raw, "lasting": raw, "blip": raw, "adjusted": raw, "drivers": []}; run.active = []; run.cls = {}
@@ -163,7 +176,8 @@ def build_graph(run: Run):
         def f():
             wl = np.mean([next((s["weight"] for s in run.cls[d]["scenarios"] if s["shape"] == "STEP"), 0.0) for d in run.active]) if run.active else 1.0
             var = [(run.fc["lasting"], wl), (run.fc["blip"], 1 - wl)] if run.active and 0 < wl < 1 else [(run.fc["adjusted"], 1.0)]
-            run.summary, run.sim = RG.ranged_outlook(run.q, run.L, run.O, var, run.con.cursor(), N=cfg.n_sims, seed=7)
+            run.summary, run.sim = RG.ranged_outlook(run.q, run.L, run.O, var, run.con.cursor(), N=cfg.n_sims, seed=7); cal = json.loads((root / "src/range_calibration.json").read_text())
+            run.trace.emit("ranges_run", "ranges", "code", f"simulation for {run.fc['run_id']}: {cfg.n_sims} draws", {"forecast_run_id": run.fc["run_id"], "draws": cfg.n_sims, "seed": 7, "lambda": cal["lambda"], "phi": cal["phi"], "scenario_weights": [round(w, 3) for _, w in var]})
         run.node("ranges", f); return {"stage": "ranges"}
     def rollup(state):
         def f():
@@ -207,6 +221,9 @@ def build_graph(run: Run):
                 if r["status"] == "complete": led.update({k: v for k, v in r["evidence"].items() if k in ev_ids})
             meta = dict(lender=run.L, origin=run.O, run_id=run.fc["run_id"], generated=datetime.date.today().isoformat(), audit={"source": run.pack["source"], "rendered_issues": 0, "run": run.run_id})
             res = DG.generate(run.pack, run.charts, led, meta, run.out); run.outputs = {"pdf": res["pdf"], "md": res["md"], "manifest": res["manifest"]["files"].keys().__len__()}
+            run.trace.emit("pack", "pack", "llm" if run.pack["source"] == "llm" else "code", f"pack written by {run.pack['source']} author; {len(run.pack['facts'].f)} facts; numeric audit clean", {"author": run.pack["source"], "facts": len(run.pack["facts"].f), "llm_issues": run.pack["llm_issues"]})
+            for name, h in res["manifest"]["files"].items():
+                if name in ("pack.pdf", "pack.md", "evidence.json"): run.trace.emit("output", "pack", "code", f"{name} sha256 {h[:12]}", {"file": name, "sha256": h})
         run.node("pack", f); return {"stage": "pack"}
     def finalize(state):
         st = state.get("status") or ("complete" if not run.warnings else "complete_with_warnings")
@@ -219,12 +236,14 @@ def build_graph(run: Run):
     g.add_edge("finalize", END); return g.compile()
 def run_lender(cfg: RunConfig):
     run = Run(cfg); status, err = None, None
+    _c = duckdb.connect(str(DB), read_only=True); run.trace.emit("run_start", "start", "system", f"run {run.run_id}", {"lender": run.L, "origin": run.O[:7], "code": code_version(), "data": data_fingerprint(_c), "config": {"draws": cfg.n_sims, "max_investigations": cfg.max_investigations, "workers": cfg.workers, "timeout_s": cfg.investigation_timeout, "llm": cfg.client is not None, "injected_faults": list(cfg.inject)}}); _c.close()
     try: out = build_graph(run).invoke({"stage": "start"}); status = out.get("status")
     except Exception as e: status, err = "failed", f"{type(e).__name__}: {e}"
     finally:
         try: run.con and run.con.close()
         except Exception: pass
-    rec = {"run_id": run.run_id, "lender": run.L, "origin": run.O[:7], "status": status, "error": err, "total_secs": round(time.time() - run.t0, 1), "nodes": run.nodes, "warnings": run.warnings, "incomplete_investigations": run.incomplete,
+    run.trace.emit("run_end", "end", "system", f"run finished: {status}", {"status": status, "error": err, "warnings": run.warnings, "total_secs": round(time.time() - run.t0, 1)}); trace_report(run.trace.path, run.trace.path.with_suffix(".report.md"))
+    rec = {"trace": str(run.trace.path), "run_id": run.run_id, "lender": run.L, "origin": run.O[:7], "status": status, "error": err, "total_secs": round(time.time() - run.t0, 1), "nodes": run.nodes, "warnings": run.warnings, "incomplete_investigations": run.incomplete,
            "investigations": [{"label": r.get("label"), "status": r["status"], "source": r.get("source", "llm" if cfg.client else None), "reason": r.get("reason")} for r in run.results], "active_drivers": run.active, "outputs": run.outputs}
     d = pathlib.Path(cfg.out_root) / "runs"; d.mkdir(parents=True, exist_ok=True); (d / f"{run.run_id}.json").write_text(json.dumps(rec, indent=1, default=str)); return rec
 def prepare(origin):
