@@ -9,7 +9,8 @@
 | 5 | Lender lock and time-cutoff controls | done | src/guarded_sql.py, tests/test_guards.py |
 | 6 | Full transition matrix builder | done | src/transition_matrix.py |
 | 7 | Seasonal-naive benchmark | done | src/benchmark.py |
-| 8 | Baseline forecasting models | in progress | src/forecast_models.py |
-| 9-31 | remaining | not started | |
+| 8 | Baseline forecasting models | done | src/forecast_models.py |
+| 9 | Model bake-off and selection | done (ensemble, 25.8% better than snaive; below 30% bar) | src/bakeoff.py |
+| 10-31 | remaining | not started | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).

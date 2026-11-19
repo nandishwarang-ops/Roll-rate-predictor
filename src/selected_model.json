@@ -1,0 +1,10 @@
+{
+ "model": "ensemble",
+ "cell_mape": 0.21851984851701658,
+ "improvement_vs_snaive": 0.25806295723870487,
+ "components": [
+  "ets",
+  "sarimax",
+  "gbm"
+ ]
+}
