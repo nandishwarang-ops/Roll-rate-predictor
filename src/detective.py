@@ -111,7 +111,10 @@ def run_detective(inv, client, con, sql_tool=None, attr_tool=None, max_turns=24,
     run_id = run_id or f"det_{lender}_{month}_{abs(hash(inv['node'] + inv['metric'] + inv['bucket_from'])) % 10**6}"
     sql = sql_tool or SQLTool(lender, month, run_id=run_id); attr = attr_tool or AttributionTool(lender, month, run_id=run_id, g=sql.g)
     import drift_profiler as dp
-    brief = (brief or build_brief(inv, con)) + sql.schema_text()
+    try:
+        import escalations; fu = escalations.followups_text(lender)      # operations' earlier replies = hypotheses to test
+    except Exception: fu = ""
+    brief = (brief or build_brief(inv, con)) + fu + sql.schema_text()
     tools = [SUBMIT, SQLTool.spec, AttributionTool.spec, PROFILE]; msgs = [{"role": "user", "content": brief}]; trace = []; bounces = 0; usage = [0, 0]
     for turn in range(max_turns):
         r = client.create(SYSTEM, msgs, tools); usage[0] += r["usage"]["in"]; usage[1] += r["usage"]["out"]
