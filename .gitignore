@@ -1,0 +1,8 @@
+.venv/
+rollrate.duckdb
+files/
+files.zip
+data/
+answer_key/
+.DS_Store
+__pycache__/
