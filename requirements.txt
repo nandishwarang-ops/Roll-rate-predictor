@@ -4,6 +4,9 @@ duckdb==1.4.5
 matplotlib
 pandas==2.3.3
 pyarrow==21.0.0
+pypdf
+pypdfium2
+reportlab==4.2.5
 scikit-learn==1.6.1
 scipy==1.13.1
 statsmodels==0.14.6

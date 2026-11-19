@@ -83,10 +83,10 @@ def what_moved(ss, total_pp, path, node, metric_label, month, top=8):
     [ax.spines[s].set_visible(False) for s in ("top", "right", "left", "bottom")]; ax.tick_params(colors=INK2, labelsize=8.5, length=0); ax.grid(axis="x", color=GRID, lw=0.8); ax.set_axisbelow(True)
     cols = [ORANGE if v > 0 else BLUE for v in d.total_pp]; ax.barh([s.replace("|", " / ").replace("_", " ").title() for s in d.index], d.total_pp.values, color=cols, height=0.55, zorder=3); ax.axvline(0, color=INK3, lw=1, zorder=4)
     span = max(abs(d.total_pp).max(), 1e-9)
-    for i, v in enumerate(d.total_pp.values): ax.text(v + (0.02 * span if v >= 0 else -0.02 * span), i, f"{v:+.2f}", va="center", ha="left" if v >= 0 else "right", fontsize=8.5, color=INK)
+    for i, v in enumerate(d.total_pp.values): ax.text(v + (0.02 * span if v >= 0 else -0.02 * span), i, f"{v:+.1f}", va="center", ha="left" if v >= 0 else "right", fontsize=8.5, color=INK)
     ax.set_xlim(-span * 1.25, span * 1.25); ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:+.1f}"))
     from matplotlib.patches import Patch; ax.legend(handles=[Patch(color=ORANGE, label="Raised the rate"), Patch(color=BLUE, label="Lowered the rate")], loc="lower right", frameon=False, fontsize=8.5, labelcolor=INK2)
-    t = f"{node}: {metric_label} {'rose' if total_pp > 0 else 'fell'} {abs(total_pp):.2f} points in {month:%b %Y}; {d.index[-1].replace('|', ' / ').replace('_', ' ').title()} moved it most"
+    t = f"{node}: {metric_label} {'rose' if total_pp > 0 else 'fell'} {abs(total_pp):.1f} points in {month:%b %Y}; {d.index[-1].replace('|', ' / ').replace('_', ' ').title()} moved it most"
     _title(fig, t, "Contribution of each segment to the lender-level change, percentage points (mix + rate effects)"); fig.subplots_adjust(left=0.27, right=0.95, top=0.77, bottom=0.10)
     p = pathlib.Path(path); p.parent.mkdir(parents=True, exist_ok=True); fig.savefig(p, facecolor=SURF); plt.close(fig)
     tab = ss.head(top).reset_index().rename(columns={"index": "segment"}); tab.to_csv(p.with_suffix(".csv"), index=False); p.with_suffix(".alt.txt").write_text(t + ". Horizontal bars of per-segment contribution in percentage points. Values in the adjacent CSV."); return str(p)
