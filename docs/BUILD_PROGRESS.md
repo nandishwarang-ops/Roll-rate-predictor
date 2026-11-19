@@ -18,6 +18,7 @@
 | 14 | Attribution engine | done | src/attribution.py, tests/test_attribution.py |
 | 15 | Agent 1: Root-Cause Detective | built, offline-tested; live LLM run pending ANTHROPIC_API_KEY | src/detective.py, tests/test_detective.py |
 | 16 | Escalation questions and non-blocking notification | done (default channel = local outbox) | src/escalations.py, tests/test_escalations.py |
-| 17-31 | remaining | not started | |
+| 17 | Driver registry (memory across months) | done | src/driver_registry.py, tests/test_driver_registry.py |
+| 18-31 | remaining | not started | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).

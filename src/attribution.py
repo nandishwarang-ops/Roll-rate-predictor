@@ -104,7 +104,9 @@ class AttributionTool:
             if df.is_T.sum() == 0: return {"ok": False, "error": "no accounts in the current window for this pool"}
             res = attribute(df, metric, causes, control, partition_dimension)
         except Exception as e: return {"ok": False, "error": str(e).splitlines()[0]}
-        self.n += 1; aid = f"A{self.n:03d}"; res = {"ok": True, "attribution_id": aid, **res}
+        self.n += 1; aid = f"A{self.n:03d}"
+        res = {"ok": True, "attribution_id": aid, **res, "args": dict(month=month, bucket_from=bucket_from, metric=metric, product_type=product_type, region=region,
+               recent_months=recent_months, baseline_lag=baseline_lag, causes=causes, control=control)}
         self.evidence[aid] = res
         with open(self.path, "a") as f: f.write(json.dumps({"run_id": self.run_id, "attribution_id": aid, "ts": datetime.datetime.now().isoformat(timespec="seconds"),
               "args": dict(month=month, bucket_from=bucket_from, metric=metric, product_type=product_type, region=region, recent_months=recent_months, baseline_lag=baseline_lag, causes=causes, control=control), "result": res}, default=str) + "\n")
