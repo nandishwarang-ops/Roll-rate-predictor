@@ -1,0 +1,249 @@
+{
+ "run_id": "dq_20261120_003023_5aea66",
+ "schema": "main",
+ "generated": "2026-11-20T00:30:23",
+ "summary": {
+  "PASS": 16,
+  "WARN": 2,
+  "FAIL": 0
+ },
+ "checks": [
+  {
+   "check": "D1 one row per account per month",
+   "status": "PASS",
+   "detail": "0 duplicated (account, month) keys",
+   "sample": null
+  },
+  {
+   "check": "D3 event_id unique",
+   "status": "PASS",
+   "detail": "0 duplicate event_ids",
+   "sample": null
+  },
+  {
+   "check": "No nulls in key columns",
+   "status": "PASS",
+   "detail": "all key columns complete",
+   "sample": null
+  },
+  {
+   "check": "d1_account_monthly: 24 months per lender",
+   "status": "PASS",
+   "detail": "LENDER_A: 24 months 2023-10-01\u21922025-09-01; LENDER_B: 24 months 2023-10-01\u21922025-09-01; LENDER_C: 24 months 2023-10-01\u21922025-09-01",
+   "sample": null
+  },
+  {
+   "check": "d3_collection_events: 24 months per lender",
+   "status": "PASS",
+   "detail": "LENDER_A: 24 months 2023-10-01\u21922025-09-01; LENDER_B: 24 months 2023-10-01\u21922025-09-01; LENDER_C: 24 months 2023-10-01\u21922025-09-01",
+   "sample": null
+  },
+  {
+   "check": "bucket_flow_history: 24 months per lender",
+   "status": "PASS",
+   "detail": "LENDER_A: 24 months 2023-10-01\u21922025-09-01; LENDER_B: 24 months 2023-10-01\u21922025-09-01; LENDER_C: 24 months 2023-10-01\u21922025-09-01",
+   "sample": null
+  },
+  {
+   "check": "bucket_flow_history reconciles with D1 (account counts)",
+   "status": "PASS",
+   "detail": "16,050 cells compared, 0 mismatches",
+   "sample": null
+  },
+  {
+   "check": "No forward bucket skips (e.g. CURRENT -> 31-60 in one month)",
+   "status": "PASS",
+   "detail": "0 accounts skipped a bucket",
+   "sample": null
+  },
+  {
+   "check": "No transitions out of terminal buckets",
+   "status": "PASS",
+   "detail": "0 rows",
+   "sample": null
+  },
+  {
+   "check": "dpd_curr agrees with bucket_curr",
+   "status": "PASS",
+   "detail": "0 inconsistent rows",
+   "sample": null
+  },
+  {
+   "check": "No negative or zero amounts in D1",
+   "status": "PASS",
+   "detail": "0 rows",
+   "sample": null
+  },
+  {
+   "check": "Bureau score within 300-900",
+   "status": "PASS",
+   "detail": "0 rows out of range",
+   "sample": null
+  },
+  {
+   "check": "D3 events link to a D1 account",
+   "status": "PASS",
+   "detail": "0 orphan events",
+   "sample": null
+  },
+  {
+   "check": "D3 event_timestamp falls in its month_date",
+   "status": "PASS",
+   "detail": "0 events",
+   "sample": null
+  },
+  {
+   "check": "Successful payments carry an amount",
+   "status": "WARN",
+   "detail": "127 events",
+   "sample": null
+  },
+  {
+   "check": "Event calendar: end date not before start",
+   "status": "PASS",
+   "detail": "0 events",
+   "sample": null
+  },
+  {
+   "check": "Event calendar: 'known in advance' events announced before start",
+   "status": "PASS",
+   "detail": "0 events",
+   "sample": null
+  },
+  {
+   "check": "Segment thickness (opening accounts >= 30/month)",
+   "status": "WARN",
+   "detail": "16 of 180 segment-buckets have months below 30 accounts; rates there are noisy",
+   "sample": [
+    {
+     "lender": "LENDER_C",
+     "product": "TWO_WHEELER",
+     "region": "EAST",
+     "bucket": "61-90",
+     "months_thin": 24,
+     "min_accounts": 10
+    },
+    {
+     "lender": "LENDER_C",
+     "product": "BUSINESS_LOAN",
+     "region": "EAST",
+     "bucket": "61-90",
+     "months_thin": 24,
+     "min_accounts": 10
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "BUSINESS_LOAN",
+     "region": "WEST",
+     "bucket": "61-90",
+     "months_thin": 20,
+     "min_accounts": 14
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "BUSINESS_LOAN",
+     "region": "NORTH",
+     "bucket": "61-90",
+     "months_thin": 18,
+     "min_accounts": 14
+    },
+    {
+     "lender": "LENDER_C",
+     "product": "BUSINESS_LOAN",
+     "region": "EAST",
+     "bucket": "31-60",
+     "months_thin": 16,
+     "min_accounts": 15
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "BUSINESS_LOAN",
+     "region": "EAST",
+     "bucket": "61-90",
+     "months_thin": 15,
+     "min_accounts": 16
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "BUSINESS_LOAN",
+     "region": "SOUTH",
+     "bucket": "61-90",
+     "months_thin": 10,
+     "min_accounts": 17
+    },
+    {
+     "lender": "LENDER_C",
+     "product": "TWO_WHEELER",
+     "region": "EAST",
+     "bucket": "31-60",
+     "months_thin": 9,
+     "min_accounts": 18
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "PERSONAL_LOAN",
+     "region": "WEST",
+     "bucket": "61-90",
+     "months_thin": 9,
+     "min_accounts": 24
+    },
+    {
+     "lender": "LENDER_C",
+     "product": "BUSINESS_LOAN",
+     "region": "SOUTH",
+     "bucket": "61-90",
+     "months_thin": 3,
+     "min_accounts": 26
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "BUSINESS_LOAN",
+     "region": "WEST",
+     "bucket": "31-60",
+     "months_thin": 3,
+     "min_accounts": 24
+    },
+    {
+     "lender": "LENDER_C",
+     "product": "TWO_WHEELER",
+     "region": "WEST",
+     "bucket": "61-90",
+     "months_thin": 2,
+     "min_accounts": 28
+    },
+    {
+     "lender": "LENDER_C",
+     "product": "TWO_WHEELER",
+     "region": "SOUTH",
+     "bucket": "61-90",
+     "months_thin": 2,
+     "min_accounts": 25
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "BUSINESS_LOAN",
+     "region": "EAST",
+     "bucket": "31-60",
+     "months_thin": 2,
+     "min_accounts": 26
+    },
+    {
+     "lender": "LENDER_C",
+     "product": "BUSINESS_LOAN",
+     "region": "WEST",
+     "bucket": "61-90",
+     "months_thin": 1,
+     "min_accounts": 28
+    },
+    {
+     "lender": "LENDER_B",
+     "product": "PERSONAL_LOAN",
+     "region": "EAST",
+     "bucket": "61-90",
+     "months_thin": 1,
+     "min_accounts": 27
+    }
+   ]
+  }
+ ]
+}
