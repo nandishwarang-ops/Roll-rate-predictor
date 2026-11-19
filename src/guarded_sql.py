@@ -26,7 +26,7 @@ class GuardedSQL:
         mart = [r[0] for r in con.sql("select table_name from duckdb_tables() where database_name='src' and schema_name='mart'").fetchall()]
         for t in mart:
             cols = [r[0] for r in con.sql(f"describe src.mart.{t}").fetchall()]
-            if "lender_id" in cols:
+            if "lender_id" in cols and "month_date" in cols:
                 con.sql(f"create table {t} as select * from src.mart.{t} where lender_id='{L}' and month_date <= date '{A}'")
         con.sql("detach src")
         con.sql("set enable_external_access=false"); con.sql("set lock_configuration=true")
