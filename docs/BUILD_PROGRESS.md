@@ -22,6 +22,7 @@
 | 18 | Agent 2: Regime Classifier and scenario builder | built; deterministic prior tested; live LLM path pending ANTHROPIC_API_KEY | src/classifier.py, tests/test_classifier.py |
 | 19 | Forecasting tool with interventions | done (small, noise-limited gain on the real agency case; see docs/intervention_backtest.md) | src/intervention_forecast.py, src/intervention_backtest.py |
 | 20 | Multi-month chaining (3-month outlook) | done | src/chaining.py, tests/test_chaining.py, docs/chaining_backtest.md |
-| 21-31 | remaining | not started | |
+| 21 | Range calibration and simulation-based aggregate ranges | done (coverage 78-89% vs 80% target; leave-one-origin-out) | src/ranges.py, src/ranges_backtest.py, tests/test_ranges.py, docs/range_calibration.md |
+| 22-31 | remaining | not started | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).
