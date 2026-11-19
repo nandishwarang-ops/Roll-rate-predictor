@@ -29,7 +29,7 @@ def check_question(q, ents):
     return None
 def fallback_questions(inv, clues):
     """deterministic questions from the top profiler clues, used when the model's questions fail the check."""
-    out = []; m = str(inv["month"])[:7]; lender, scope = inv["node"].split("|")[0], " / ".join(inv["node"].split("|")[1:]) or "all products and regions"
+    out = []; m = datetime.datetime.fromisoformat(str(inv["month"])[:10]).strftime("%B %Y"); lender, scope = inv["node"].split("|")[0], " / ".join(inv["node"].split("|")[1:]) or "all products and regions"
     for c in clues[:2]: out.append(f"Did anything change in {c} for {lender} {scope} around {m} (staffing, allocation, calling hours, policy, system)?")
     out.append(f"Was there any process, system or policy change in {lender} {scope} collections in {m} that affects accounts opening in the {inv['bucket_from']} bucket?")
     return out[:3]
