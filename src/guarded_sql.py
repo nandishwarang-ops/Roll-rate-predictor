@@ -31,6 +31,9 @@ class GuardedSQL:
         con.sql("detach src")
         con.sql("set enable_external_access=false"); con.sql("set lock_configuration=true")
         self.con = con
+    def fork(self):
+        """a second handle on the SAME locked sandbox (own cursor, shared audit list) so parallel workers never share one connection."""
+        n = object.__new__(GuardedSQL); n.__dict__.update(self.__dict__); n.con = self.con.cursor(); return n
     def _log(self, sql, status, note=""):
         self.audit.append({"ts": datetime.datetime.now().isoformat(timespec="seconds"), "run_id": self.run_id, "lender": self.lender_id,
                            "as_of": self.as_of, "sql": sql, "status": status, "note": note})

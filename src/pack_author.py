@@ -104,7 +104,7 @@ def template_author(ctx, F):
     drivers = ctx.get("drivers", [])
     if drivers:
         d = drivers[0]; ch = F.add(f"observed change in {d['pool_label']}", d["observed_change_pp"], "pp", d["attribution_id"], signed=True)
-        head = f"{d['pool_label']} {'rose' if d['observed_change_pp'] > 0 else 'fell'} by {ch} in {MONTHLY(O)}; the main identified cause: {d['what']} ({d['category'].replace('_', ' ')}). [{', '.join(d['evidence_ids'])}]"
+        head = f"{d['pool_label']} {'rose' if d['observed_change_pp'] > 0 else 'fell'} by {ch} in {MONTHLY(O)}; the main finding: {d['what']} ({d['category'].replace('_', ' ')}). [{', '.join(d['evidence_ids'])}]"
     else: head = f"No unusual movement was found for {L} in {MONTHLY(O)}; the forecast below follows the statistical baseline."
     S["Headline"] = head
     S["Outlook (3 months)"] = (f"Model run `{rid}`. At {MONTHLY(O)} close, {R['npa_accounts_now']} loans were more than 90 days past due ({R['npa_ratio_now']} of live loans). "
@@ -122,17 +122,16 @@ def template_author(ctx, F):
             att = ""
             if d.get("contribution_pp") is not None:
                 c = F.add(f"contribution of {d['what']}", d["contribution_pp"], "pp", d["attribution_id"], signed=True); lo, hi = F.add("contribution low", d["contribution_pp_80"][0], "pp", d["attribution_id"], signed=True), F.add("contribution high", d["contribution_pp_80"][1], "pp", d["attribution_id"], signed=True)
-                for t in (c, lo, hi): F.f[t.strip("{}")]["keep_sign"] = False
-                att = f" Compared with its control group, this cause added {c} to the pool's rate (80% range {lo} to {hi})."
-                if d.get("share_of_change") is not None and d["share_of_change"] > 1.05:
-                    ctl = F.add("control group movement", d["control_change_pp"], "pp", d["attribution_id"], signed=True); F.f[ctl.strip("{}")]["keep_sign"] = False
-                    att += f" This cause is larger than the net movement because the rest of the pool moved the other way, by {ctl}; both effects are real and they partly cancel."
-                elif d.get("share_of_change") is not None:
-                    att += f" That is {F.add('share of change', d['share_of_change'], 'ratio', d['attribution_id'])} of the observed movement."
+                F.f[c.strip("{}")]["keep_sign"] = False; F.f[lo.strip("{}")]["keep_sign"] = F.f[hi.strip("{}")]["keep_sign"] = True
+                verb = "added" if d["contribution_pp"] >= 0 else "subtracted"
+                att = f" Compared with its control group, this cause {verb} {c} {'to' if verb == 'added' else 'from'} the pool's rate (80% range {lo} to {hi})."
+                sh = d.get("share_of_change")
+                if sh is not None and 0 <= sh <= 1.05:
+                    att += f" That is {F.add('share of change', sh, 'ratio', d['attribution_id'])} of the observed movement."
                     if d.get("unexplained_share") is not None: att += f" The remainder, {F.add('unexplained share', d['unexplained_share'], 'ratio', d['attribution_id'])}, is not explained by this cause."
                 else:
                     ctl = F.add("control group movement", d["control_change_pp"], "pp", d["attribution_id"], signed=True); F.f[ctl.strip("{}")]["keep_sign"] = True
-                    att += f" The rest of the pool moved by {ctl}, so the net movement of the whole pool is too small, relative to sampling noise, to state a share; the cause is real at the level of its own slice."
+                    att += f" The rest of the pool moved by {ctl}, so a share of the net movement is not meaningful here; both effects are real and they partly offset each other."
             parts.append(f"### {d['what'][0].upper() + d['what'][1:]}\n\n**What:** {d['what']}. **Where:** {d['where']}. **When:** since {d['start_label']}. **Category:** {d['category'].replace('_', ' ')}. **Registry status:** {d['status'].replace('_', ' ')} ({d['driver_id']}).{att} Control group: {d['control_group_note']}. Forecast scenarios: {sc}. [{', '.join(d['evidence_ids'])}]")
         S["Drivers"] = "\n\n".join(parts)
     else: S["Drivers"] = "No driver was confirmed this month."
@@ -147,6 +146,8 @@ def template_author(ctx, F):
     meth = "**Method.** Roll-rates are forecast per segment with an ensemble of three statistical models; a change-detection step flags unusual months; each flagged movement is investigated by testing hypotheses against control groups; effects are quantified by a deterministic calculator, never estimated by the writing model. Ranges come from simulating the full three-month chain with errors calibrated on past forecasts."
     if cal: meth += f" In back-tests the 80% ranges covered the actual outcome between {F.add('min coverage', cal['min_cov'], 'ratio', 'docs/range_calibration.md')} and {F.add('max coverage', cal['max_cov'], 'ratio', 'docs/range_calibration.md')} of the time."
     if dq: meth += f" Data checks: {F.add('checks passed', dq['PASS'], 'int', 'docs/data_quality_report.json')} passed, {F.add('checks warned', dq['WARN'], 'int', 'docs/data_quality_report.json')} warned, {F.add('checks failed', dq['FAIL'], 'int', 'docs/data_quality_report.json')} failed."
+    inc = ctx.get("incomplete") or []
+    if inc: meth += f" {F.add('incomplete investigations', len(inc), 'int', 'run record')} flagged movement(s) could not be investigated automatically this month ({'; '.join(inc)}); those segments keep their statistical baseline forecast."
     S["Methodology and limits"] = meth + " New loans are assumed to continue at the recent average pace, and principal per account is held at its latest level."
     return S
 def assemble(S): return "\n\n".join(f"## {k}\n\n{v}" if k != "Headline" else f"# {v}" for k, v in S.items())
