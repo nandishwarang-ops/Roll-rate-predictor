@@ -111,8 +111,9 @@ def forecast_gbm(piv, horizon, exog=None, hist=None, **_):
         preds[h - 1] = expit(mdl.predict(feats(T - 1, h, fut[h - 1])))
     return [(c, preds[:, i]) for i, c in enumerate(cols)]
 MODELS = {"ets": forecast_ets, "sarimax": forecast_sarimax, "gbm": forecast_gbm, "snaive": forecast_snaive, "naive": forecast_naive}
-def forecast(model, con, origin, horizon=3, level="segment"):
-    hist = history(con, origin, level); piv = _series_frames(hist)
+def forecast(model, con, origin, horizon=3, level="segment", hist=None):
+    """hist: optional pre-built history (e.g. one lender, or a counterfactual history with a driver's effect removed)."""
+    hist = history(con, origin, level) if hist is None else hist; piv = _series_frames(hist)
     regions = sorted(hist.region.unique()); fut = month_range(piv.index[-1] + pd.offsets.MonthBegin(1), piv.index[-1] + pd.offsets.MonthBegin(horizon))
     exog = calendar_exog(con, regions, list(piv.index) + list(fut), origin)
     res = MODELS[model](piv, horizon, exog=exog, hist=hist)

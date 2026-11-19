@@ -20,6 +20,7 @@
 | 16 | Escalation questions and non-blocking notification | done (default channel = local outbox) | src/escalations.py, tests/test_escalations.py |
 | 17 | Driver registry (memory across months) | done | src/driver_registry.py, tests/test_driver_registry.py |
 | 18 | Agent 2: Regime Classifier and scenario builder | built; deterministic prior tested; live LLM path pending ANTHROPIC_API_KEY | src/classifier.py, tests/test_classifier.py |
-| 19-31 | remaining | not started | |
+| 19 | Forecasting tool with interventions | done (small, noise-limited gain on the real agency case; see docs/intervention_backtest.md) | src/intervention_forecast.py, src/intervention_backtest.py |
+| 20-31 | remaining | not started | |
 
 Note: sections 6 and 7 were first committed under the labels "5" and "6" (numbering slip; section 5 was skipped and has now been built).
